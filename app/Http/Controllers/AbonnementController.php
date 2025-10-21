@@ -69,7 +69,7 @@ class AbonnementController extends Controller
         $ph = '';
         $photo = '';
         if ($lenregistrement) {
-            $photo = 'storage/images/' . $lenregistrement->logo;
+            $photo = 'storage/images/abonnements/' . $lenregistrement->logo;
             //storage/images/ABADASSI Jerry.JPG
             $idlocalite = $lenregistrement->idlocalite;
             if ($idarrond == null) {
@@ -145,6 +145,8 @@ class AbonnementController extends Controller
                 $e->identifiant = $request->identifiant;
                 $e->idlocalite = $request->idlocalite;
                 $e->idsecteur = $request->idsecteur;
+                $e->titredirecteur = $request->titredirecteur;
+                $e->directeur = $request->directeur;
 
                 if ($e->save()) {
                     if ($id == 0 || $id == null) {
@@ -179,13 +181,13 @@ class AbonnementController extends Controller
     {
         try {
             //Controle de possibilité de suppression
-            $rekete = " ( SELECT id FROM apprenants WHERE idabonnement = '".$id."') ";
-            $rekete .= " UNION ( SELECT id FROM classannescos WHERE idabonnement = '".$id."') ";
-            $rekete .= " UNION ( SELECT id FROM coefficients WHERE idabonnement = '".$id."') ";
-            $rekete .= " UNION ( SELECT id FROM paramfrais WHERE idabonnement = '".$id."') ";
-            $rekete .= " UNION ( SELECT id FROM subventions WHERE idabonnement = '".$id."') ";
-            $rekete .= " UNION ( SELECT id FROM users WHERE idabonnement = '".$id."') ";
-             $v = collect(DB::select($rekete));
+            $rekete = " ( SELECT id FROM apprenants WHERE idabonnement = '" . $id . "') ";
+            $rekete .= " UNION ( SELECT id FROM classannescos WHERE idabonnement = '" . $id . "') ";
+            $rekete .= " UNION ( SELECT id FROM coefficients WHERE idabonnement = '" . $id . "') ";
+            $rekete .= " UNION ( SELECT id FROM paramfrais WHERE idabonnement = '" . $id . "') ";
+            $rekete .= " UNION ( SELECT id FROM subventions WHERE idabonnement = '" . $id . "') ";
+            $rekete .= " UNION ( SELECT id FROM users WHERE idabonnement = '" . $id . "') ";
+            $v = collect(DB::select($rekete));
             if (count($v) == 0) {
                 $e = abonnement::findOrFail($id);
                 //dd($e);

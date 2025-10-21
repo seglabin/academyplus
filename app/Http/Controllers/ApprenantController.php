@@ -39,12 +39,14 @@ class ApprenantController extends Controller
             $rekclas .= " ORDER BY libclasse ";
             $classannescos = collect(DB::select($rekclas));
 
-            $clas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+            $sexe = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = pe.idsexe),'') sexe ";
+            $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+            $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
             $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
             $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id ORDER BY ins.id ),'0')  ";
             $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
 
-            $rekete = " SELECT a.*, npi, nom, prenoms, contactparent , CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
+            $rekete = " SELECT a.*, npi, nom, prenoms, contactparent , CONCAT(nom, ' ', prenoms) libapprenant, photo  " . $idinscription . $clas.$libclas. $sexe . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
             $rekete .= "FROM apprenants a, personnes pe WHERE a.idpersonne = pe.id";
             if ($idclassannesco != null && $idclassannesco != 0) {
                 $rekete .= " AND a.id IN ( SELECT idapprenant FROM inscriptions WHERE idclassannesco = '" . $idclassannesco . "' ) ";

@@ -162,7 +162,6 @@ class MoyperiodapprenantsController extends Controller
             'idmatieresel'
         ));
     }
-
     public function enregistrer(Request $request)
     {
         //  dd($request);

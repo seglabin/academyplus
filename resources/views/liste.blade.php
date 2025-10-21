@@ -13,23 +13,29 @@ $userEncours = (session('userEncours')!=null)? session('userEncours'):null;
 $anEncours = (session('anEncours')!=null)? session('anEncours'):null;
 $abonnementEncours = (session('abonnementEncours')!=null)? session('abonnementEncours'):null;
 $roleEncours = (session('roleEncours')!=null)? session('roleEncours'):null;
-//$classannescos = (session('classannescosEncours')!=null)? session('classannescosEncours'):array();
-//$idclassannesco = '';
-
-//classannescosEncours
 
 $idsession = isset($idsession)?$idsession:null;
 
 $idanEncours = $anEncours!= null?$anEncours->id:null;
 $idabonnementEncours = $abonnementEncours!= null?$abonnementEncours->id:null;
 $codeRoleEncours = $roleEncours!= null?$roleEncours->code:null;
+
+   $coltitre = "";// "N°";
+    $coldata =  "";// "num";
+    $donneeimprim = array();
+ 
+
+
 //echo $config;
 switch ($config) {
 case 'role':
 $lecas = "Liste des profil-utilisateurs";
 $lienAjout = "/ajout-role";
-$tires = array('Code', 'Désignation');
-$cols = array('code', 'name');
+$coltitre .= "Code|Désignation";
+$coldata .= "code|name";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
+
 $lienModif = "modifier-role/";
 $lienSuppr = "supprimer-role/";
 break;
@@ -37,8 +43,11 @@ break;
 case 'personne':
 $lecas = "Liste des informations personnelles";
 $lienAjout = "/ajout-personne"; // `datenais`, `lieunais`, `contactparent`
-$tires = array('NPI','Nom', 'Prénoms','Contact parent','Né(e) le', 'Né(e) à ','Sexe','Nationalité');
-$cols = array('npi','nom', 'prenoms','contactparent','datenais','lieunais','libsexe','libnationalite');
+
+$coltitre .= "NPI|Nom|Prénoms|Contact parent|Né(e) le|Né(e) à |Sexe|Nationalité";
+$coldata .= "npi|nom|prenoms|contactparent|datenais|lieunais|libsexe|libnationalite";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-personne/";
 $lienSuppr = "supprimer-personne/";
 break;
@@ -46,8 +55,10 @@ break;
 case 'session-academique':
 $lecas = "Liste des sessions académiques";
 $lienAjout = "/ajout-session-academique";
-$tires = array('Libellé', 'Secteur');
-$cols = array('libelle', 'libsecteur');
+$coltitre .= "Libellé|Secteur";
+$coldata .= "libelle|libsecteur";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-session-academique/";
 $lienSuppr = "supprimer-session-academique/";
 break;
@@ -55,8 +66,10 @@ break;
 case 'coefficient':
 $lecas = "Liste des coefficients par classe et par matière";
 $lienAjout = "/ajout-coefficient";
-$tires = array('Matière','Classe','Type de matière','Coefficient','Ordre sur le bulletin');
-$cols = array('libmatiere','libclas','libtypematiere','coef','rang');
+$coltitre .= "Matière|Classe|Type de matière|Coefficient|Ordre sur le bulletin";
+$coldata .= "libmatiere|libclas|libtypematiere|coef|rang";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-coefficient/";
 $lienSuppr = "supprimer-coefficient/";
 break;
@@ -64,8 +77,10 @@ break;
 case 'matiere':
 $lecas = "Liste des matières";
 $lienAjout = "/ajout-matiere";
-$tires = array('Libellé','Abréviation');
-$cols = array('libelle','abreviation');
+$coltitre .= "Libellé|Abréviation";
+$coldata .= "libelle|abreviation";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-matiere/";
 $lienSuppr = "supprimer-matiere/";
 break;
@@ -73,8 +88,10 @@ break;
 case 'utilisateur':
 $lecas = "Liste des utilisateurs de la plateforme";
 $lienAjout = "/ajout-utilisateur"; //libpersonne  librole  libabonnement    libtype
-$tires = array('Login', 'Infos personnelle',  'Profil','Type','Abonnement');
-$cols = array('login', 'libpersonne', 'librole', 'libtype',  'libabonnement');
+$coltitre .= "Login|Infos personnelle|Profil|Type|Abonnement";
+$coldata .= "login|libpersonne|librole|libtype|libabonnement";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-utilisateur/";
 $lienSuppr = "supprimer-utilisateur/";
 break;
@@ -82,8 +99,10 @@ break;
 case 'classetype':
 $lecas = "Liste des classe - types";
 $lienAjout = "/ajout-classetype";
-$tires = array('Secteur', 'Niveau', 'Sigle', 'Désignation');
-$cols = array('secteur', 'niveau', 'sigle', 'libelle');
+$coltitre .= "Secteur|Niveau|Sigle|Désignation";
+$coldata .= "secteur|niveau|sigle|libelle";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-classetype/";
 $lienSuppr = "supprimer-classetype/";
 break;
@@ -91,8 +110,10 @@ break;
 case 'apprenant':
 $lecas = "Liste des apprenants";
 $lienAjout = "/ajout-apprenant";
-$tires = array('Matricule', 'NPI','Nom', 'Prénoms','contactparent','Classe actuelle','Tot. à payer','Tot. Payé','Reste à payer');
-$cols = array('matricule','npi', 'nom', 'prenoms', 'contactparent','classeactuelle','totscolarite','totpaye','reste');
+$coltitre .= "Matricule|NPI|Nom|Prénoms|contactparent|Classe actuelle|Tot. à payer|Tot. Payé|Reste à payer";
+$coldata .= "matricule|npi|nom|prenoms|contactparent|classeactuelle|totscolarite|totpaye|reste";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-apprenant/";
 $lienSuppr = "supprimer-apprenant/";
 break;
@@ -100,10 +121,10 @@ break;
 case 'classannesco':
 $lecas = "Liste des classes par année scolaire";
 $lienAjout = "/ajout-classannesco";
-$tires = array('Classe', 'Année scolaire', 'Abonnement','Groupe');
-$cols = array('libelle','libannee','designation','groupe');
-/*$tires = array('Classe', 'Année scolaire', 'Abonnement','Groupe');
-$cols = array('secteur', 'niveau', 'sigle', 'groupe');*/
+$coltitre .= "Classe|Année scolaire|Abonnement|Groupe";
+$coldata .= "libelle|libannee|designation|groupe";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-classannesco/";
 $lienSuppr = "supprimer-classannesco/";
 break;
@@ -111,8 +132,10 @@ break;
 case 'anneescolaire':
 $lecas = "Liste des années scolaires";
 $lienAjout = "/ajout-anneescolaire";
-$tires = array('Année de début');
-$cols = array('andebut');
+$coltitre .= "Année de début";
+$coldata .= "andebut";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-anneescolaire/";
 $lienSuppr = "supprimer-anneescolaire/";
 break;
@@ -120,8 +143,10 @@ break;
 case 'abonnement':
 $lecas = "Liste des abonnements";
 $lienAjout = "/ajout-abonnement";
-$tires = array('Désignation', 'Mail', 'Contact','Secteur', 'Expire le ');
-$cols = array('designation', 'email', 'contact','libsecteur', 'datexpiration');
+$coltitre .= "Désignation|Mail|Contact|Secteur|Expire le";
+$coldata .= "designation|email|contact|libsecteur|datexpiration";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-abonnement/";
 $lienSuppr = "supprimer-abonnement/";
 break;
@@ -129,8 +154,10 @@ break;
 case 'paiement':
 $lecas = "Liste des paiements";
 $lienAjout = "/ajout-paiement";
-$tires = array('Date paiement', 'Apprenant', 'Montant payé','Motif', 'Déposant');
-$cols = array('datepaiement', 'libapprenant', 'montant','libmotif', 'deposant');
+$coltitre .= "Date paiement|Apprenant|Montant payé|Motif|Déposant";
+$coldata .= "datepaiement|libapprenant|montant|libmotif|deposant";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-paiement/";
 $lienSuppr = "supprimer-paiement/";
 break;
@@ -138,8 +165,12 @@ break;
 case 'paramfrais':
 $lecas = "Liste des paramétrages de frais de scolarité";
 $lienAjout = "/ajout-paramfrais";
-$tires = array('Classe', 'Frais de scolarité', "Frais d'inscription",'Frais de réinscription');
-$cols = array('libelle', 'fraiscolarite', 'fraisinscrip','fraisreinscrit');
+$tires = array('');
+$cols = array('');
+$coltitre .= "Classe|Frais de scolarité|Frais d'inscription|Frais de réinscription";
+$coldata .= "libelle|fraiscolarite|fraisinscrip|fraisreinscrit";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-paramfrais/";
 $lienSuppr = "supprimer-paramfrais/";
 break;
@@ -147,8 +178,10 @@ break;
 case 'evaluation':
 $lecas = "Liste des évaluations";
 $lienAjout = "/ajout-evaluation";
-$tires = array('Date évaluation','Libellé', 'Classe', 'Matière');
-$cols = array('datevaluation','libelle', 'libclas', 'libmatiere');
+$coltitre .= "Date évaluation|Libellé|Classe|Matière";
+$coldata .= "datevaluation|libelle|libclas|libmatiere";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-evaluation/";
 $lienSuppr = "supprimer-evaluation/";
 break;
@@ -156,8 +189,12 @@ break;
 case 'composition':
 $lecas = "Liste des évaluations au primaire";
 $lienAjout = "/ajout-composition";
-$tires = array('Date évaluation','Libellé', 'Classe');
-$cols = array('datecompo','libelle', 'libclas');
+$tires = array();
+$cols = array();
+$coltitre .= "Date évaluation|Libellé|Classe'";
+$coldata .= "datecompo|libelle|libclas";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-composition/";
 $lienSuppr = "supprimer-composition/";
 break;
@@ -165,8 +202,10 @@ break;
 case 'moyenne-periode':
 $lecas = "Liste des moyennes par matière et par session académique";
 $lienAjout = "/ajout-moyenne-periode";
-$tires = array('Matière','Libellé');
-$cols = array('libmatiere','libelle');
+$coltitre .= "Matière|Libellé";
+$coldata .= "libmatiere|libelle";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-moyenne-periode/";
 $lienSuppr = "supprimer-moyenne-periode/";
 break;
@@ -174,23 +213,31 @@ break;
 case 'permission':
 $lecas = "Liste des fonctionnalités";
 $lienAjout = "/ajout-permission";
-$tires = array('Libellé','Description');
-$cols = array('libelle', 'description');
+$coltitre .= "Libellé|Description";
+$coldata .= "libelle|description";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-permission/";
 $lienSuppr = "supprimer-permission/";
 break;
 
 case 'element':
-
 $lecas = $titre;
 $lienAjout = "/ajout-element";
-$tires = array('Désignation');
-$cols = array('libelle');
+$coltitre .= "Désignation";
+$coldata .= "libelle";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
 $lienModif = "modifier-element/";
 $lienSuppr = "supprimer-element/";
 break;
 
 }
+
+$coltitre = "N°|".$coltitre;
+$coldata =  "num|".$coldata;
+
+//dd($cols);
 @endphp
 
 @extends('layout', ["page_title" => Session('title'), "caspage" => 'liste', "lecas" => $lecas, "lienAjout" => $lienAjout])
@@ -220,7 +267,7 @@ break;
                 @endphp
             </div>
             @if (!(in_array($config,array('coefficient'))))
-            <div class="col-md-4 mb-2">
+            <div class="col-md-3 mb-2">
                 <label class="lelabel" for="">Année scolaire </label>
                 @php              
                 echo chargerCombo($annescolaires, 'id', 'libannee', 'idanneescolaire', 'Choisir une année scolaire','',"onChangeGet('$config')",$idanneescolaire);
@@ -234,6 +281,12 @@ break;
                 echo chargerCombo($classannescos, 'id', 'libclasse', 'idclassannesco', 'Choisir une année scolaire','',"onChangeGet('$config')",$idclassannesco);
                 @endphp
             </div>
+            @endif
+            @if (in_array($config,array('apprenant')))
+                <div class="col-md-1 mb-2">
+                  <label class="lelabel" for=""> </label>
+                    <a href="#" onclick="imprimerCarte();" class="btn btn-info" target="_blank"> Cartes</a>
+                </div>
             @endif
 
         </div>
@@ -268,19 +321,20 @@ break;
                 @php              
                 echo chargerCombo($classannescos, 'id', 'libclasse', 'idclassannesco', 'Choisir une année scolaire','',"onChangeGet('$config')",$idclassannesco);
                 @endphp
-            </div>
-           
+            </div>           
           
-            <div class="col-md-3 mb-2">
-                <label class="lelabel" for="">Section académique</label>
-                @php              
-                echo chargerCombo($sessionacad, 'id', 'libelle', 'idsession', 'Choisir une session académique','',"onChangeGet('$config')",$idsession);
-                @endphp
-            </div>
-           
+          <div class="col-md-3 mb-2">
+              <label class="lelabel" for="">Section académique</label>
+              @php              
+              echo chargerCombo($sessionacad, 'id', 'libelle', 'idsession', 'Choisir une session académique','',"onChangeGet('$config')",$idsession);
+              @endphp
+          </div>
 
+           
         </div>
         @endif
+
+        
 
         <table id="letablo" class="table table-bordered table-striped appliqueDT " scrol>
             <thead>
@@ -295,10 +349,22 @@ break;
                     <th>{{ $t }}</th>
                     @endforeach
                     @if ($config == 'anneescolaire')
+                    @php
+                    $coltitre .= "|Libellé";
+                    $coldata .= "|libannee";
+                    @endphp
+                    @php
+                    $coltitre .= "";
+                    $coldata .= "";
+                    @endphp
                     <th>Libellé</th>
                     @endif
                    
                     @if ($config == 'matiere')
+                     @php
+                    $coltitre .= "|Maternel|Primaire|Secondaire|Universitaire";
+                    $coldata .= "|maternel|primaire|secondaire|universitaire";
+                    @endphp
                     <th>Maternel</th>
                     <th>Primaire</th>
                     <th>Secondaire</th>
@@ -313,6 +379,10 @@ break;
                 $j = 0;
                 @endphp
                 @foreach ($donnees as $i => $d)
+                @php
+                    $ln = array();
+                    $ln['num'] = $j + 1;                    
+                @endphp
                 <tr>
                     @php
                     $j++;
@@ -321,15 +391,26 @@ break;
                         {{$j}}
                     </td>                                
                     @foreach ($cols as $c)
-
                     <td>
+                        @php
+                        $ln[$c] = $d->$c;
+                        @endphp
                         {{$d->$c}}
                     </td>
                     @endforeach
                     @if ($config == 'anneescolaire')
+                    @php
+                        $ln['libannee'] = $d->libannee();
+                    @endphp
                     <td> {{$d->libannee()}} </td>
-                    @endif
-                    @if ($config == 'matiere')
+                    @endif 
+                    @if ($config == 'matiere') 
+                    @php
+                        $ln['maternel'] = $d->maternel;
+                        $ln['primaire'] = $d->primaire;
+                        $ln['secondaire'] = $d->secondaire;
+                        $ln['universitaire'] = $d->universitaire;
+                    @endphp
                     <td> <input class="center" type="checkbox" onclick="return false"  {{($d->maternel == 1)?"checked = true" : ''}}  /> </td>
                     <td> <input type="checkbox" onclick="return false"  {{($d->primaire == 1)?"checked = true" : ''}}  /> </td>
                     <td> <input type="checkbox" onclick="return false" {{($d->secondaire == 1)?"checked = true" : ''}}  /> </td>
@@ -377,6 +458,10 @@ break;
                             @endif    
 
                             @if ($config == 'apprenant')
+                            @php
+                             $ln['sexe'] = $d->sexe;
+                             $ln['photo'] = $d->photo;
+                            @endphp
                             <a class="flex items-center text-danger" href="#" data-toggle="modal"
                                data-target="#modalInscription{{ $i }}"
                             title="Inscription "> <img src="{{asset('assets/img/favicon.png')}}"
@@ -411,10 +496,17 @@ break;
 
 
                 </tr>
+                @php
+                array_push($donneeimprim, $ln);
+                @endphp
                 @endforeach
             </tbody>
         </table>
-
+        @php 
+            session(['donneeimprim' => $donneeimprim]);
+            session(['coltitre' => $coltitre]);
+            session(['coldata' => $coldata]);
+        @endphp
 
     </div>
 </div>

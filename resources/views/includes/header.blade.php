@@ -63,30 +63,38 @@
             <div class="container position-relative">
                 <div class="row">
         
-                    @if ($caspage == 'form')
                     <div class="col-md-2">
-                            <div class="card-tools" style="position:left;">
-                                <a class="btn btn-info btnarrondi" href="#" onclick="history.go( - 1);"
-                                    style="position:left;"> <i class="bi bi-arrow-left"></i> Retour</a>
-                            </div>
-                        </div>
+                        @if ($caspage == 'form')
+                        <div class="card-tools" style="position:left;">
+                            <a class="btn btn-info btnarrondi" href="#" onclick="history.go( - 1);"
+                            style="position:left;"> <i class="bi bi-arrow-left"></i> Retour</a>
+                        </div>                        
                         @endif
-                    <div class="col-md-10">
+                        @if ($caspage == 'liste')
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <a class="btn btn-success btnarrondi active" href="#" onclick="" > <i class="bi  bi-print"></i> EXCEL</a>
+                                <a class="btn btn-success btnarrondi" href="#" onclick="imprimerPDF();" target="_blank" > <i class="bi  bi-print"></i> PDF</a>
+                           
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-8">
+                        <input type="hidden" id="letitre" name="letitre" value="{{$lecas}}">
                         <h1>{{$lecas}}</h1>
                         {{--<p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda
                             numquam
                             molestias.</p>--}}
                     </div>
-                    @if ($caspage == 'liste')
                     <div class="col-md-2">
-                            @if(is_array($menusUser) && in_array(1, $menusUser))
-                    <div class="card-tools" style="position:right;">
-                                <a class="btn btn-success btnarrondi" href="#" onclick="ajouter('{{ $lienAjout }}');"
-                                    style="position:right;"> <i class="bi  bi-plus-circle"></i> Ajouter</a>
-                            </div>
+                        @if(is_array($menusUser) && in_array(1, $menusUser))
+                            @if ($caspage == 'liste')
+                                <div class="card-tools" style="position:right;">
+                                    <a class="btn btn-success btnarrondi" href="#" onclick="ajouter('{{ $lienAjout }}');"
+                                        style="position:right;"> <i class="bi  bi-plus-circle"></i> Ajouter</a>
+                                </div>
                             @endif
-                        </div>
                         @endif
+                        </div>
                 </div>
                 <!-- <nav class="breadcrumbs">
                     <ol>

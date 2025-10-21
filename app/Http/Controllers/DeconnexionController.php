@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class DeconnexionController extends Controller
 {
     public function deconnecter(){
+         try {
         $utilisateur = User::where('id',Auth::user()->id)->first();
         $utilisateur->statut = false;
         $utilisateur->save();
@@ -20,5 +21,9 @@ class DeconnexionController extends Controller
 
         auth()->logout();
         return redirect('/login');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back();
+        }
      }
 }

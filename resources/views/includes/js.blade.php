@@ -101,7 +101,7 @@
         }
 
         var moy = (n > 0) ? (s / n) : -1;
-         moy = parseFloat(moy.toFixed(2));
+        moy = parseFloat(moy.toFixed(2));
 
         $('#moyenne' + j).val(moy);
     }
@@ -119,7 +119,7 @@
         }
 
         var moy = (n > 0) ? (s / n) : -1;
-         moy = parseFloat(moy.toFixed(2));
+        moy = parseFloat(moy.toFixed(2));
 
         $('#moyIntero' + j).val(moy);
         calculMoyPeriodeMatiere(j);
@@ -145,10 +145,10 @@
             s += dev2;
         }
 
-// alert(s);
+        // alert(s);
         var moy = (n > 0) ? (s / n) : -1;
         moy = parseFloat(moy.toFixed(2));
-        
+
         $('#moy' + j).val(moy);
     }
 
@@ -310,8 +310,27 @@
         document.forms["myform"].submit();
     }
 
+    function imprimerPDF() {
+        let act = '/imprimer';  //_blank
+        document.forms["myform"].target = '_blank';
+        document.forms["myform"].method = 'GET';
+        document.forms["myform"].action = act;
+        document.forms["myform"].submit();
+
+    }
+
+    function imprimerCarte() {
+        let act = '/cartes';  //_blank
+        document.forms["myform"].target = '_blank';
+        document.forms["myform"].method = 'GET';
+        document.forms["myform"].action = act;
+        document.forms["myform"].submit();
+
+    }
+
+
     let idtable = "letablo";
-    let optbuton = ["excel", "pdf"];
+    let optbuton = ["colvis"]; // ["excel", "pdf"];
 
 
     appliqudataTable(idtable, optbuton)

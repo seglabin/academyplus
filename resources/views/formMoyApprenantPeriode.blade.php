@@ -27,7 +27,7 @@ $lib .= " pour le ".infoTableParId('sessionacademiques',$idsession,'libelle').' 
 $lib .= " / ". (($lannesco!= null)?$lannesco->libannee():'');
 @endphp
 
-@extends('layout', ["page_title" => Session('title'), "caspage" => 'form', "lecas" => $lecas])
+@extends('layout', ["page_title" => Session('title'), "caspage" => 'liste', "lecas" => $lecas])
 
 @section('content')
 
@@ -107,7 +107,7 @@ $lib .= " / ". (($lannesco!= null)?$lannesco->libannee():'');
                    value="{{strtoupper(($lib))}}">
         </div>
         <div class="col-md-3 mb-2"> 
-            <button type="button" onclick="imprimerPDF();" target="_blank"> PDF </button>
+           
         </div>
         <br>
     <!--</div>-->
@@ -192,14 +192,7 @@ $lib .= " / ". (($lannesco!= null)?$lannesco->libannee():'');
     $('#moyperiod').val(moy.toFixed(2));
     }
 
-function imprimerPDF() {
-    let act = '/imprimer';  //_blank
-     document.forms["myform"].target = '_blank';
-     document.forms["myform"].method = 'GET';
-    document.forms["myform"].action = act;
-    document.forms["myform"].submit();
 
-}
 function lancherPDF() {
     let fichier = 'print/impression.php';
     // alert('Merci Seigneur Jésus!');

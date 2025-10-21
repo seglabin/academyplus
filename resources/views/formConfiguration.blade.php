@@ -142,6 +142,18 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                            placeholder="Entrez la date d'expiration" onKeyup="" id="datexpiration" name="datexpiration"
                            value="{{($a != null) ? $a->datexpiration: old('datexpiration')}}">
                 </div>
+                <div class="col-md-4 mb-2">
+                    <label class=" lelabel" for="">Titre du signataire</label>
+                    <input type="text" class="form-control rounded-4 "
+                           placeholder="Entrez le titre du signataire" onKeyup="enMajuscule('titredirecteur',1);" id="titredirecteur" name="titredirecteur"
+                           value="{{($a != null) ? $a->titredirecteur : old('titredirecteur')}}">
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class=" lelabel" for="">Le Directeur/La Directrice</label>
+                    <input type="text" class="form-control rounded-4 "
+                           placeholder="Entrez les infos du signataire" onKeyup="enMajuscule('directeur',1);" id="directeur" name="directeur"
+                           value="{{($a != null) ? $a->directeur : old('directeur')}}">
+                </div>
             </div>
         </div>
         <div class="col-md-2 mb-2">
