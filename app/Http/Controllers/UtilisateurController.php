@@ -39,10 +39,10 @@ class UtilisateurController extends Controller
             $rekete = " SELECT u.*, r.name librole " . $libpers . $libabonnement . $libtyp;
             $rekete .= " FROM users u, roles r  ";
             $rekete .= " WHERE u.idrole = r.id ";
-            if ($u->idrole)
+            if ($u->idrole != 3)
                 $rekete .= " AND idabonnement = '" . $u->idabonnement . "' ";
             $rekete .= " ORDER BY libpersonne ";
-            // dd($rekete);
+            //  dd($rekete);
             $donnees = collect(DB::select($rekete));
             // $donnees = User::get(); 
 
