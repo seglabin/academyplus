@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\abonnement;
 use App\Models\localite;
 use App\Models\secteur;
-use App\Models\user;
+use App\Models\User;
+use App\Models\personne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -150,20 +151,36 @@ class AbonnementController extends Controller
 
                 if ($e->save()) {
                     if ($id == 0 || $id == null) {
-                        //Enregistrement admin de l'abonné
-                        $u = new user();
-                        // $u->idpersonne = $request->idpersonne;
-                        $u->idrole = '5'; //Secrétaire
-                        $u->idtypuser = '10'; //Personnel
-                        $u->email = $request->email;
-                        $u->contact = $request->contact;
-                        $u->idabonnement = $e->id;
-                        $u->login = $request->identifiant;
-                        $hashed = Hash::make('passe');
-                        $u->password = $hashed;
-                        $u->is_active = true;
+                        // Enregistrement personne
 
-                        $u->save();
+                        $p = new personne();
+                        $p->npi = $request->identifiant;
+                        $p->nom = $request->identifiant;
+                        $p->prenoms =$request->identifiant;
+                        $p->datenais = date('2025-01-01');
+                        $p->lieunais = '';
+                        $p->contactparent = $request->contact;
+                        $p->idsexe = 7;
+                        $p->idnationalite = null;
+
+                        if ($p->save()) {
+
+                            //Enregistrement admin de l'abonné
+                            $u = new user();
+                            // $u->idpersonne = $request->idpersonne;
+                            $u->idrole = '5'; //Secrétaire
+                            $u->idtypuser = '10'; //Personnel
+                            $u->idpersonne = $p->id; //Personnel
+                            $u->email = $request->email;
+                            $u->contact = $request->contact;
+                            $u->idabonnement = $e->id;
+                            $u->login = $request->identifiant;
+                            $hashed = Hash::make('passe');
+                            $u->password = $hashed;
+                            $u->is_active = true;
+
+                            $u->save();
+                        }
                     }
                 }
                 return redirect()->route('abonnement');
