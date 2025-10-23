@@ -11,7 +11,7 @@ class DeconnexionController extends Controller
 {
     public function deconnecter(){
          try {
-            // dd('here');
+            dd('here');
         $utilisateur = User::where('id',Auth::user()->id)->first();
         $utilisateur->statut = false;
         $utilisateur->save();
