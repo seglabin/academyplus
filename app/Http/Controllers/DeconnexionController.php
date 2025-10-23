@@ -11,6 +11,7 @@ class DeconnexionController extends Controller
 {
     public function deconnecter(){
          try {
+            // dd('here');
         $utilisateur = User::where('id',Auth::user()->id)->first();
         $utilisateur->statut = false;
         $utilisateur->save();
@@ -20,7 +21,7 @@ class DeconnexionController extends Controller
         $historique->save(); 
 
         auth()->logout();
-        return redirect()->route('home');
+        return redirect()->route('login');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back();

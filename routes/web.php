@@ -53,6 +53,7 @@ Route::get('/login', function () {
     session(['config' => '']);
     return view('login');
 })->name('login');
+Route::get('/deconnecter', [DeconnexionController::class, 'deconnecter'])->name('deconnecter');
 
 // Route::get('/cartes', function () {
 //     session(['config' => '']);
@@ -65,7 +66,6 @@ Route::post('/connecter', [ConnexionController::class, 'connecter'])->name('conn
 Route::get('/imprimer', [ImpressionController::class, 'imprimer'])->name('imprimer');
 Route::get('/cartes', [ImpressionController::class, 'cartes'])->name('cartes');
 
-Route::get('/deconnecter', [DeconnexionController::class, 'deconnecter'])->name('deconnecter');
 
 Route::middleware(['auth'])->group(function () {
 
