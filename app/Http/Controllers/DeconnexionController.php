@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Historique;
+use App\Models\historique;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +15,12 @@ class DeconnexionController extends Controller
              $utilisateur->statut = false;
              $utilisateur->save();
              
-             $historique = Historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+             $historique = historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
              $historique->status = false;
              $historique->save(); 
              
              auth()->logout();
-             dd('here');
+            //  dd('here');
         return redirect()->route('login');
         } catch (\Exception $e) {
             dd($e);
