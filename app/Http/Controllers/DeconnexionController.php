@@ -11,16 +11,16 @@ class DeconnexionController extends Controller
 {
     public function deconnecter(){
          try {
-            dd('here');
-        $utilisateur = User::where('id',Auth::user()->id)->first();
-        $utilisateur->statut = false;
-        $utilisateur->save();
-
-        $historique = Historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-        $historique->status = false;
-        $historique->save(); 
-
-        auth()->logout();
+             $utilisateur = User::where('id',Auth::user()->id)->first();
+             $utilisateur->statut = false;
+             $utilisateur->save();
+             
+             $historique = Historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+             $historique->status = false;
+             $historique->save(); 
+             
+             auth()->logout();
+             dd('here');
         return redirect()->route('login');
         } catch (\Exception $e) {
             dd($e);
