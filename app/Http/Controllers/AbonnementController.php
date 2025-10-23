@@ -156,6 +156,7 @@ class AbonnementController extends Controller
                         $u->idrole = '5'; //Secrétaire
                         $u->idtypuser = '10'; //Personnel
                         $u->email = $request->email;
+                        $u->contact = $request->contact;
                         $u->idabonnement = $e->id;
                         $u->login = $request->identifiant;
                         $hashed = Hash::make('passe');
