@@ -152,7 +152,7 @@ class AbonnementController extends Controller
                 if ($e->save()) {
                     if ($id == 0 || $id == null) {
                         // Enregistrement personne
-dd($e->id);
+// dd($e->id);
                         $p = new personne();
                         $p->npi = $request->identifiant;
                         $p->nom = $request->identifiant;
@@ -167,7 +167,7 @@ dd($e->id);
                         if ($p->save()) {
 
                             //Enregistrement admin de l'abonné
-                            $u = new user();
+                            $u = new User();
                             // $u->idpersonne = $request->idpersonne;
                             $u->idrole = '5'; //Secrétaire
                             $u->idtypuser = '10'; //Personnel
