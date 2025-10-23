@@ -152,7 +152,7 @@ class AbonnementController extends Controller
                 if ($e->save()) {
                     if ($id == 0 || $id == null) {
                         // Enregistrement personne
-
+dd($e->id);
                         $p = new personne();
                         $p->npi = $request->identifiant;
                         $p->nom = $request->identifiant;
@@ -161,6 +161,7 @@ class AbonnementController extends Controller
                         $p->lieunais = '';
                         $p->contactparent = $request->contact;
                         $p->idsexe = 7;
+                        $p->photo = $e->logo;
                         $p->idnationalite = null;
 
                         if ($p->save()) {
@@ -170,7 +171,7 @@ class AbonnementController extends Controller
                             // $u->idpersonne = $request->idpersonne;
                             $u->idrole = '5'; //Secrétaire
                             $u->idtypuser = '10'; //Personnel
-                            $u->idpersonne = $p->id; //Personnel
+                            $u->idpersonne = $p->id; 
                             $u->email = $request->email;
                             $u->contact = $request->contact;
                             $u->idabonnement = $e->id;
