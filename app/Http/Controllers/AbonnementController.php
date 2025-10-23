@@ -137,7 +137,7 @@ class AbonnementController extends Controller
                     $imagePath->move(public_path('storage/images/abonnements'), $customFileName);
                     $e->logo = $customFileName;
                 }
-                // dd($request->datexpiration);
+                dd($request->idlocalite);
                 $e->email = $request->email;
                 $e->designation = $request->designation;
                 $e->contact = $request->contact;
