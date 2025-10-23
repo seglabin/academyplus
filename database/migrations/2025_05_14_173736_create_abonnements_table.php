@@ -30,12 +30,7 @@ return new class extends Migration
                     ->on('localites')
                     ->onDelete('restrict')
                     ->onUpdate('restrict');
-            $table->unsignedBigInteger('iduser');
-            $table->foreign('iduser')
-                    ->references('id')
-                    ->on('users')
-                    ->onDelete('restrict')
-                    ->onUpdate('restrict');
+            
             $table->timestamps();
         });
     }

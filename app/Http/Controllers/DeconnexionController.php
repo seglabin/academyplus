@@ -20,7 +20,7 @@ class DeconnexionController extends Controller
         $historique->save(); 
 
         auth()->logout();
-        return redirect('/login');
+        return redirect()->route( 'login');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back();
