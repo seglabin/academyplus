@@ -73,6 +73,10 @@ class UtilisateurController extends Controller
         session(['config' => 'utilisateur']);
         $roles = role::orderBy('name')->get();
         $abonnements = abonnement::orderBy('designation')->get();
+        $nationalites = element::where('nomtable', 'NATIONALITE')
+            ->orderBy('libelle')->get();
+        $sexes = element::where('nomtable', 'SEXE')
+            ->orderBy('libelle')->get();
         $typusers = element::where('nomtable', 'TYPEUSER')
             ->orderBy('libelle')->get();
 
@@ -85,7 +89,9 @@ class UtilisateurController extends Controller
             'roles',
             'abonnements',
             'typusers',
-            'personnes'
+            'personnes',
+            'nationalites',
+            'sexes'
         ));
 
     }

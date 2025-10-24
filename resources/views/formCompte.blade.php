@@ -30,7 +30,19 @@ $idenreg = $a != null? $a->id:'';
     @switch($config) 
 
     @case('utilisateur')
-
+<div class="col-md-4 mb-2">
+        <label class="lelabel" for="">Infos personnels</label>
+      <div class="btn-group btn-group-toggle"  style="width:100%;">
+      @php
+        echo chargerCombo($personnes, 'id', 'libpersonne', 'idpersonne', 'Choisir une personne','','',($a != null) ? $a->idpersonne : old('idpersonne'));
+        @endphp
+    <a class="flex items-center text-danger" href="#" data-toggle="modal"
+                               data-target="#modalPersonne"
+                            title="Inscription "> <img src="{{asset('assets/img/favicon.png')}}"
+                                                       alt="Ajouter une personne" style="width: 28px;  height: 28px;" /> </a>
+       </div>
+                                                       @include('includes.modalPersonne')
+    </div>
     <div class="col-md-4 mb-2">
         <label class="lelabel" for="">Abonnements</label>
         @php
@@ -46,8 +58,7 @@ $idenreg = $a != null? $a->id:'';
         @endphp
     </div>
 
-
-    <div class="col-md-4 mb-2">
+    <div class="col-md-3 mb-2">
         <label class="lelabel" for="">Type d'utilisateur (*)</label>
         @php
 
@@ -55,12 +66,7 @@ $idenreg = $a != null? $a->id:'';
         @endphp
     </div>
 
-    <div class="col-md-3 mb-2">
-        <label class="lelabel" for="">Infos personnels</label>
-        @php
-        echo chargerCombo($personnes, 'id', 'libpersonne', 'idpersonne', 'Choisir une personne','','',($a != null) ? $a->idpersonne : old('idpersonne'));
-        @endphp
-    </div>
+    
 
     <div class="col-md-3 mb-2">
         <label class=" lelabel" for="">Email</label>

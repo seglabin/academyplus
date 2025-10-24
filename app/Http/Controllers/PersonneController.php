@@ -133,6 +133,51 @@ class PersonneController extends Controller
         }
     }
 
+    public function enregistrerModal(Request $request)
+    {
+        //  dd($request);
+        //  return back();
+        try {
+            // $id = $request->input('idenreg');
+            // $route = 'personne';
+
+            // Doublon
+            $rekete = " SELECT  * FROM personnes WHERE ( (nom = '" . $request->nom . "' AND prenoms = '" . $request->prenoms . "')  ";
+            $rekete .= " OR  npi = '" . $request->npi . "' )";
+            
+            $doub = DB::select($rekete);
+            $doub = collect($doub);
+            if (count($doub) == 0) {              
+                    $p = new personne();               
+                if ($request->hasFile('photo')) {
+                    $imagePath = $request->file('photo');
+                    $customFileName = $imagePath->getClientOriginalName(); // Utilisez le nom d'origine du fichier
+                    $imagePath->move(public_path('storage/images/Personnes'), $customFileName);
+                    $p->photo = $customFileName;
+                    //  dd($customFileName);
+                }
+                $p->npi = $request->npi;
+                $p->nom = $request->nom;
+                $p->prenoms = $request->prenoms;
+                $p->datenais = $request->datenais;
+                $p->lieunais = $request->lieunais;
+                $p->contactparent = $request->contactparent;
+                $p->idsexe = $request->idsexe;
+                $p->idnationalite = $request->idnationalite;
+                $p->save();
+                return back();
+            } else {
+                $info = "La personne que vous tentez d'enregistrer existe déjà";
+                $titre = "DOUBLON";
+                return view('alertDoublon', compact('info', 'titre'));
+            }            
+
+        } catch (\Exception $e) {
+            dd($e);
+            return back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de la personne.' . $e);
+        }
+    }
+
     public function supprimer($id)
     {
         try {

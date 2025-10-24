@@ -153,7 +153,7 @@
             <div class="row">
                 
                 <div class="col-md-3 mb-2">
-                    <label class=" lelabel" for="">NPI</label>
+                    <label class=" lelabel" for="">NPI(*)</label>
                     <div class="custom-search">
                         <input type="text" class="custom-search-input"
                                placeholder="Entrez NPI" onchange="" onKeyup="enMajuscule('npi');" id="npi" name="npi"

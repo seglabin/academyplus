@@ -104,6 +104,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajout-personne', [PersonneController::class, 'form']);
     Route::get('/modifier-personne/{id}', [PersonneController::class, 'formModif']);
     Route::POST('/enregistrer-personne', [PersonneController::class, 'enregistrer']);
+    Route::POST('/enregistrer-personne-modal', [PersonneController::class, 'enregistrerModal']);
     Route::get('/supprimer-personne/{id}', [PersonneController::class, 'supprimer']);
 
     // ===========-------------Affectation----------===========
