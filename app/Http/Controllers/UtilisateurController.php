@@ -121,7 +121,7 @@ class UtilisateurController extends Controller
                     $e->password = $hashed;
                     $e->is_active = true;
                 }
-                dd($request->idabonnement);
+                // dd($request->idabonnement);
                 $e->save();
                 return redirect()->route('utilisateur');
             } else {
