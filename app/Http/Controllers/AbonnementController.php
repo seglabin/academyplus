@@ -159,7 +159,7 @@ class AbonnementController extends Controller
                         $p->prenoms =$request->identifiant;
                         $p->datenais = date('2025-01-01');
                         $p->lieunais = '';
-                        $p->contactparent = $request->contact;
+                        $p->contactparent = $e->contact;
                         $p->idsexe = 7;
                         $p->photo = $e->logo;
                         $p->idnationalite = null;
@@ -173,7 +173,7 @@ class AbonnementController extends Controller
                             $u->idtypuser = '10'; //Personnel
                             $u->idpersonne = $p->id; 
                             $u->email = $request->email;
-                            $u->contact = $request->contact;
+                            //$u->contact = $e->contact;
                             $u->idabonnement = $e->id;
                             $u->login = $request->identifiant;
                             $hashed = Hash::make('passe');
