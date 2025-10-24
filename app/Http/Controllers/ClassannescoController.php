@@ -30,7 +30,7 @@ class ClassannescoController extends Controller
             $rekete .= " FROM classannescos ca, anneescolaires a, abonnements ab, classetypes c ";
             $rekete .= " WHERE ca.idanneescolaire = a.id AND ca.idabonnement = ab.id AND ca.idclasse = c.id ";
             $rekete .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "'";
-            $rekete .= " ORDER BY niveau ";
+            $rekete .= " ORDER BY niveau, groupe ";
             $donnees = collect(DB::select($rekete));
 
 
