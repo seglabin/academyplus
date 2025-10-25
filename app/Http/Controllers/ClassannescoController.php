@@ -175,7 +175,7 @@ class ClassannescoController extends Controller
                 }
 
 
-                dd($rekete);
+                // dd($rekete);
                 if ($rekete != "")
                     $donnees = collect(DB::select($rekete));
                 //  dd($donnees);
