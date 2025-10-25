@@ -159,7 +159,7 @@ class ClassannescoController extends Controller
                         // $rekete = " SELECT a.*, CONCAT(nom, ' ', prenoms) libapprenant ";
                         $clas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
                         $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
-                        $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id ORDER BY ins.id ),'0')  ";
+                        $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY p.idinscription ORDER BY ins.id ),'0')  ";
 
                        $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
            
@@ -175,7 +175,7 @@ class ClassannescoController extends Controller
                 }
 
 
-                // dd($rekete);
+                dd($rekete);
                 if ($rekete != "")
                     $donnees = collect(DB::select($rekete));
                 //  dd($donnees);
