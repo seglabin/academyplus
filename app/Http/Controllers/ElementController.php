@@ -64,7 +64,7 @@ class ElementController extends Controller
 
     public function enregistrer(Request $request)
     {
-        // dd($request);
+        //  dd($request);
         try {
 
             $id = $request->input('idenreg');
@@ -94,6 +94,7 @@ class ElementController extends Controller
                 return view('alertDoublon', compact('info', 'titre'));
             }
         } catch (\Exception $e) {
+            // dd($e);
             return redirect()->route('element')->with('error', 'Une erreur est survenue lors de l\'enregistrement de l\'élément.' . $e);
         }
     }

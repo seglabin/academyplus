@@ -101,8 +101,8 @@ class ClassannescoController extends Controller
                         break;
                     case 'paiementAbonne':
                         $rekappr = "SELECT ins.*, CONCAT(nom,' ', prenoms) libapprenant ";
-                        $rekappr .= " FROM inscriptions ins, apprenants a ";
-                        $rekappr .= " WHERE ins.idapprenant = a.id AND idclassannesco = '" . $idclas . "' ";
+                        $rekappr .= " FROM inscriptions ins, apprenants a, personnes pe ";
+                        $rekappr .= " WHERE ins.idapprenant = a.id  AND pe.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";
                         $rekappr .= " ORDER BY libapprenant ";
                         $apprenants = collect(DB::select($rekappr));
 
@@ -124,8 +124,8 @@ class ClassannescoController extends Controller
                             $rekete .= ", COALESCE((SELECT m" . $i . " FROM moyennecompos m WHERE m.idinscription = ins.id AND idcompo = '" . $idenreg . "' ),'') m" . $i . " ";
                         }
                         $laclassannesco = classannesco::find($idclas);
-                        $rekete .= " FROM inscriptions ins, apprenants a ";
-                        $rekete .= " WHERE ins.idapprenant = a.id ";
+                        $rekete .= " FROM inscriptions ins, apprenants a, personnes p ";
+                        $rekete .= " WHERE ins.idapprenant = a.id   AND p.id = a.idpersonne";
                         $rekete .= " AND idclassannesco = '" . $idclas . "'";
                         $rekete .= " ORDER BY libapprenant ";
                         $donnees = collect(DB::select($rekete));
@@ -140,9 +140,9 @@ class ClassannescoController extends Controller
                         break;
                     case 'listePaiementAbonnement':
                         $rekete = "SELECT p.*, CONCAT(nom,' ', prenoms) libapprenant, libelle libmotif ";
-                        $rekete .= " FROM paiements p, inscriptions ins, apprenants a, elements e ";
+                        $rekete .= " FROM paiements p, inscriptions ins, apprenants a, elements e, personnes pe ";
                         $rekete .= " WHERE p.idinscription = ins.id AND ins.idapprenant = a.id AND e.id = p.idmotif ";
-                        $rekete .= " AND idclassannesco = '" . $idclas . "'";
+                        $rekete .= " AND pe.id = a.idpersonne AND idclassannesco = '" . $idclas . "'";
                         $rekete .= " ORDER BY datepaiement ";
                         break;
 
@@ -163,10 +163,10 @@ class ClassannescoController extends Controller
 
                        $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
            
-                        $rekete = " SELECT a.* , CONCAT(nom, ' ', prenoms) libapprenant  ".$idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
+                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent, CONCAT(nom, ' ', prenoms) libapprenant  ".$idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
 
-                        $rekete .= " FROM apprenants a, inscriptions ins ";
-                        $rekete .= " WHERE a.id = ins.idapprenant AND idclassannesco = '" . $idclas . "' ";
+                        $rekete .= " FROM apprenants a, inscriptions ins, personnes p ";
+                        $rekete .= " WHERE a.id = ins.idapprenant AND p.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";
                         break;
 
                     default:
