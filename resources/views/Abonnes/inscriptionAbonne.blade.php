@@ -1,17 +1,26 @@
 
 @php
 use App\Models\apprenant;
+use App\Models\personne;
 use App\Models\element;
 use Illuminate\Support\Facades\DB;
 
 $config = session('config') ? session('config') : '';
 //$idenreg = session('idenreg') ? session('idenreg') : '';
 $a = $lenregistrement;// ($idenreg != null) ? apprenant::find($idenreg) : null;
+$p = null;
+//dd($a);
+$npi = '';
+$idpersonne = '';
 $photo = '';
 $idap = 0;
-if ($a) {
-$photo = 'storage/images/apprenants/' . $a->photo;     
+if ($a!= null) {
+$p =personne::find($a->idpersonne);
+//dd($p);
+$photo = 'storage/images/apprenants/' . $p->photo;     
 $idap =  $a->id;     
+$idpersonne =  $a->idpersonne;     
+$npi =  $p->npi;     
 }
 
 
@@ -33,6 +42,7 @@ $ins = collect( DB::select($rek))->first();
 <input type="hidden" id='idclassannesco' name='idclassannesco' value="{{$idclasEncours}}">
 <input type="hidden" id='idabonnement' name='idabonnement' value="{{$idabonnementEncours}}">
 <input type="hidden" id='idanneescolaire' name='idanneescolaire' value="{{$idanEncours}}">
+<input type="hidden" id='idpersonne' name='idpersonne' value="{{$idpersonne}}">
 <input type="hidden" id='idinscription' name='idinscription' value="{{($ins != null) ? $ins->id:0}}">
 <div class="card " style="padding: 20px">
     <div class="row">
@@ -45,7 +55,7 @@ $ins = collect( DB::select($rek))->first();
 
                         <input type="text" class="custom-search-input"
                                placeholder="Entrez NPI" onchange="" onKeyup="enMajuscule('npi');" id="npi" name="npi"
-                               value="{{(isset($leget['npi'])&&$leget['npi']!=null)?$leget['npi']:(($a != null) ? $a->npi : old('npi'))}}">
+                               value="{{(isset($leget['npi'])&&$leget['npi']!=null)?$leget['npi']:($npi)}}">
                         <div class="input-group-append">
                             <button class="custom-search-botton btn btn-outline-success " type="button" onclick="onChangeGet('{{$config}}')"><i class="bi bi-search"></i></button>
                         </div>
@@ -73,42 +83,42 @@ $ins = collect( DB::select($rek))->first();
                 <div class="col-md-2 mb-2">
                     <label class="lelabel" for="">Sexe (*)</label>
                     @php              
-                    echo chargerCombo($sexes, 'id', 'libelle', 'idsexe', 'Choisir le sexe','',"",(isset($leget['idsexe'])&&$leget['idsexe']!=0)?$leget['idsexe']:(($a != null) ? $a->idsexe : old('idsexe')));
+                    echo chargerCombo($sexes, 'id', 'libelle', 'idsexe', 'Choisir le sexe','',"",(isset($leget['idsexe'])&&$leget['idsexe']!=0)?$leget['idsexe']:(($p != null) ? $p->idsexe : old('idsexe')));
                     @endphp
                 </div>    
                 <div class="col-md-2 mb-2">
                     <label class=" lelabel" for="">Contact parent (*)</label>
                     <input type="text" class="form-control rounded-4 @error('contactparent') is-invalid @enderror"
                            placeholder="Entrez le contact parent" onKeyup="typetelephone(this);" id="contactparent" name="contactparent"
-                           value="{{(isset($leget['contactparent'])&&$leget['contactparent']!=null)?$leget['contactparent']:(($a != null) ? $a->contactparent : old('contactparent'))}}">
+                           value="{{(isset($leget['contactparent'])&&$leget['contactparent']!=null)?$leget['contactparent']:(($p != null) ? $p->contactparent : old('contactparent'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Nom (*)</label>
                     <input type="text" class="form-control rounded-4 @error('nom') is-invalid @enderror"
                            placeholder="Entrez le nom" onKeyup="enMajuscule('nom');" id="nom" name="nom"
-                           value="{{(isset($leget['nom'])&&$leget['nom']!=null)?$leget['nom']:(($a != null) ? $a->nom : old('nom'))}}">
+                           value="{{(isset($leget['nom'])&&$leget['nom']!=null)?$leget['nom']:(($p != null) ? $p->nom : old('nom'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Prénoms (*)</label>
                     <input type="text" class="form-control rounded-4 @error('prenoms') is-invalid @enderror"
                            placeholder="Entrez le prénom" onKeyup="enMajuscule('prenoms', 1);" id="prenoms" name="prenoms"
-                           value="{{(isset($leget['prenoms'])&&$leget['prenoms']!=null)?$leget['prenoms']:(($a != null) ? $a->prenoms : old('prenoms'))}}">
+                           value="{{(isset($leget['prenoms'])&&$leget['prenoms']!=null)?$leget['prenoms']:(($p != null) ? $p->prenoms : old('prenoms'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Date de naissance (*)</label>
                     <input type="date" class="form-control rounded-4 @error('datenais') is-invalid @enderror"
                            placeholder="Entrez la date de naissance"  id="datenais" name="datenais"
-                           value="{{(isset($leget['datenais'])&&$leget['datenais']!=null)?$leget['datenais']:(($a != null) ? $a->datenais: old('datenais'))}}">
+                           value="{{(isset($leget['datenais'])&&$leget['datenais']!=null)?$leget['datenais']:(($p != null) ? $p->datenais: old('datenais'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Lieu de naissance (*)</label>
                     <input type="text" class="form-control rounded-4 @error('lieunais') is-invalid @enderror"
                            placeholder="Entrez le lieu de naissance"  onKeyup="enMajuscule('lieunais', 0);"  id="lieunais" name="lieunais"
-                           value="{{(isset($leget['lieunais'])&&$leget['lieunais']!=null)?$leget['lieunais']:(($a != null) ? $a->lieunais: old('lieunais'))}}">
+                           value="{{(isset($leget['lieunais'])&&$leget['lieunais']!=null)?$leget['lieunais']:(($p != null) ? $p->lieunais: old('lieunais'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">

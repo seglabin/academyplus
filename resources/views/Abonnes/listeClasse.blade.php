@@ -9,10 +9,10 @@
             /* justify-content: center; */
             /* Alignement horizontal au centre */
             /* Ou, pour espacer les boutons :
-                                                                 justify-content: space-around;
-                                                                 justify-content: space-between;
-                                                                 justify-content: space-evenly;
-                                                              */
+                                                                         justify-content: space-around;
+                                                                         justify-content: space-between;
+                                                                         justify-content: space-evenly;
+                                                                      */
         }
 
         .button-container a {
@@ -163,15 +163,25 @@
                     @if(is_array($menusUser) && in_array(27, $menusUser))
                         <div class="col-md-1 m">
                             <!-- <a class="btn btn-outline-success btnarrondi " href="#" onclick="module('moyenneApprenant');"></i>
-                                    Moyennes</a> -->
+                                                    Moyennes</a> -->
                         </div>
                     @endif
 
+                    <!-- <div class="col-md-1 m">
+                                <a class="btn btn-outline-success btnarrondi {{ $actCompo }} " href="#"
+                                    onclick="imprimer('{{ $module }}');"> <i class="bi bi-print"> </i>
+                                    Imprimer</a>
+                            </div> -->
                     <div class="col-md-1 m">
-                        <a class="btn btn-outline-success btnarrondi {{ $actCompo }} " href="#"
-                            onclick="imprimer('{{ $module }}');"> <i class="bi bi-print"> </i>
-                            Imprimer</a>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <a class="btn btn-success btnarrondi active" href="#" onclick=""> <i class="bi  bi-print"></i>
+                                EXCEL</a>
+                            <a class="btn btn-success btnarrondi" href="#" onclick="imprimerPDF();" target="_blank"> <i
+                                    class="bi  bi-print"></i> PDF</a>
+
+                        </div>
                     </div>
+
                 </div>
             </div>
             @if (in_array($module, array('listePaiementAbonnement', 'listeCompositionAbonne')))

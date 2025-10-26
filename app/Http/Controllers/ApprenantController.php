@@ -199,6 +199,7 @@ class ApprenantController extends Controller
             }
             $doubp = DB::select($rekete);
             $doubp = collect($doubp);
+            
             if (count($doubp) == 0) {
 
                 if ($request->idpersonne != 0 && $request->idpersonne != null) {
@@ -226,20 +227,21 @@ class ApprenantController extends Controller
 
                     // Enregistrement de l'apprenant
                     // Doublon
-                    $rekete = " SELECT  * FROM apprenants WHERE matricule = '" . $request->matricule . "'  ";
-                    $rekete .= " OR idpersonne = '" . $p->id . "' ";
+                    $rekete = " SELECT  * FROM apprenants WHERE ( matricule = '" . $request->matricule . "'  ";
+                    $rekete .= " OR idpersonne = '" . $p->id . "') ";
 
                     if ($id != 0 && $id != null) {
                         $rekete .= "  AND id != '" . $id . "' ";
                     }
                     $doub = DB::select($rekete);
                     $doub = collect($doub);
-                    //  dd($doub);
+                    //  dd($rekete);
                     if ($id == 0 || $id == null) {
                         $e = new apprenant();
                     } else {
                         $e = apprenant::findOrFail($id);
                     }
+                    
                     if (count($doub) == 0) {
 
 

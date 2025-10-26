@@ -328,9 +328,7 @@ $coldata =  "num|".$coldata;
               @php              
               echo chargerCombo($sessionacad, 'id', 'libelle', 'idsession', 'Choisir une session académique','',"onChangeGet('$config')",$idsession);
               @endphp
-          </div>
-
-           
+          </div>           
         </div>
         @endif
 

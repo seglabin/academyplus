@@ -184,7 +184,7 @@ class ClassannescoController extends Controller
 
             }
 
-
+// dd($module);
 
             session(['config' => 'classeAbonne']);
             return view('Abonnes.listeClasse', compact(
