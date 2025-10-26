@@ -183,8 +183,7 @@ class ApprenantController extends Controller
             $id = $request->input('idenreg');
             $route = 'apprenant';
             if ((isset($request->module) && $request->module == 'inscriptionAbonne')) {
-                $appr = apprenant::where('npi', $request->npi)
-                    ->orWhere('matricule', $request->matricule)->first();
+                $appr = apprenant::where('matricule', $request->matricule)->first();
                 $id = $appr != null ? $appr->id : null;
                 $route = 'classeAbonne';
                 session(['module' => 'listeApprenant']);
