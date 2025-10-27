@@ -326,6 +326,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
         @case('modifier-composition')
         @case('details-composition')
         @php
+        //dd($donnees);
         $disabled = ($config =='details-composition')?'disabled':'';
         @endphp
 
@@ -385,12 +386,14 @@ $a = ($lenregistrement) ? $lenregistrement : null;
             @foreach($matieres as $m)
             <th >{{ $m->abreviation }}</th>
             @endforeach
+            <th >Total</th>
             <th >Moyenne</th>
             </tr>
             </thead>
             <tbody>
                 @php
                 $i = 0;
+
                 @endphp
                 @foreach ($donnees as  $d)
                 <input type="hidden" id="id{{ $i }}" name="id{{ $i }}" value="{{ $d->id }}">
@@ -402,9 +405,13 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                         <td>
                             {{$d->libapprenant}}
                         </td> 
+                        @php 
+                        $tot = 0;
+                        @endphp
                          @foreach($matieres as $j => $m)
                          @php
                          $v = "m".$j+ 1;
+                         $tot += (($d->$v !=null?$d->$v :-1) > 0)?floatval($d->$v):0;
                          @endphp
                         <td>         
 
@@ -417,6 +424,9 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                          @endfor
 
                          @endif
+                        <td>
+                            <input style="width:65px;" type="number" readonly id="total{{ $i }}" name="total{{ $i }}" value="{{ round(floatval($tot) , 3)}}">
+                        </td>                       
                         <td>
                             <input style="width:65px;" type="number" readonly id="moyenne{{ $i }}" name="moyenne{{ $i }}" value="{{ round(floatval($d->moyenne) , 3)}}">
                         </td>                       

@@ -98,15 +98,17 @@ class CompositionController extends Controller
         session(['config' => $conf]);
         $idanneescolaire = session('idanneescolaire');
         $idabonnement = session('idabonnement');
-        $idclassannesco = session('idclassannesco');
+        // $idclassannesco = session('idclassannesco');
         $idsession = session('idsession');
         $lenregistrement = ($idenreg != null) ? composition::find($idenreg) : null;
+
+         $idclassannesco = ($lenregistrement != null) ? $lenregistrement->idclassannesco : (session('idclassannesco') != null ? session('idclassannesco') : null);
 
         $laclassannesco = classannesco::find($idclassannesco);
         $labonnement = abonnement::find($idabonnement);
         $lannesco = anneescolaire::find($idanneescolaire);
         $lasession = sessionacademique::find($idsession);
-        // dd($idenreg);
+        // dd($idclassannesco);
         //moyennecompo
         //m1	m2	m3	m4	m5	m6	m7	m8	m9	m10	m11	m12	moyenne	idinscription	idcompo	
         $id = ", COALESCE((SELECT id FROM moyennecompos m WHERE m.idinscription = ins.id AND idcompo = '" . $idenreg . "' ),'') id ";
@@ -119,16 +121,16 @@ class CompositionController extends Controller
             $rekete .= ", COALESCE((SELECT m" . $i . " FROM moyennecompos m WHERE m.idinscription = ins.id AND idcompo = '" . $idenreg . "' ),'') m" . $i . " ";
         }
 
-        $rekete .= " FROM inscriptions ins, apprenants a ";
-        $rekete .= " WHERE ins.idapprenant = a.id ";
+        $rekete .= " FROM inscriptions ins, apprenants a, personnes p ";
+        $rekete .= " WHERE ins.idapprenant = a.id AND a.idpersonne = p.id ";
         $rekete .= " AND idclassannesco = '" . $idclassannesco . "'";
         $rekete .= " ORDER BY libapprenant ";
         $donnees = collect(DB::select($rekete));
-        //  dd($rekete);
+        //   dd($rekete);
 
         $rekmat = "SELECT m.*, coef, rang FROM matieres m, coefficients c ";
         $rekmat .= " WHERE m.id = c.idmatiere AND idabonnement = '" . $idabonnement . "' ";
-        $rekmat .= " AND  idclasse = '" . $laclassannesco->idclasse . "' ";
+        if(isset($laclassannesco->idclasse)) $rekmat .= " AND  idclasse = '" . $laclassannesco->idclasse . "' ";
         $rekmat .= " ORDER BY rang ";
         $matieres = collect(DB::select($rekmat));
         //dd($rekmat);
