@@ -43,7 +43,7 @@ class ApprenantController extends Controller
             $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
             $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
             $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
-            $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id ORDER BY ins.id ),'0')  ";
+            $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY idinscription ORDER BY ins.id ),'0')  ";
             $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
 
             $rekete = " SELECT a.*, npi, nom, prenoms, contactparent , CONCAT(nom, ' ', prenoms) libapprenant, photo  " . $idinscription . $clas.$libclas. $sexe . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
