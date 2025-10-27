@@ -97,13 +97,13 @@ class ApprenantController extends Controller
         $modif = ($request['modif'] != null) ? $request['modif'] : false;
         $lenregistrement = ($idenreg != null) ? apprenant::find($idenreg) : null;
 
-        $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? $lenregistrement->personne() : null;
+        $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? personne::find($lenregistrement->idpersonne) : null;
 
         $leget = $_GET;
         //  dd($_GET);
         if (isset($_GET['matricule']) && $_GET['matricule'] != "") {
             $lenregistrement = apprenant::where('matricule', $_GET['matricule'])->first();
-            $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? $lenregistrement->personne() : null;
+            $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? personne::find($lenregistrement->idpersonne) : null;
 
         }
         if (isset($_GET['npi']) && $_GET['npi'] != "") {
@@ -154,7 +154,7 @@ class ApprenantController extends Controller
             ->select('classannescos.*', 'libelle', 'sigle', DB::raw('CONCAT(libelle," ",groupe) AS libclasse'))
             ->get();
 
-        // dd($idclassannesco);
+        //  dd($lapersonne);
         return view('formScolarite', compact(
             'lenregistrement',
             'idenreg',
