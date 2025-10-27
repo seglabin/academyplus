@@ -61,7 +61,7 @@ class ApprenantController extends Controller
             }
 
             $rekete .= " ORDER BY nom, prenoms ";
-            //    dd($rekete);
+               dd($rekete);
             $donnees = collect(DB::select($rekete));
 
             session(['config' => 'apprenant']);
