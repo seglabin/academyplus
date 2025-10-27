@@ -61,7 +61,7 @@ class ApprenantController extends Controller
             }
 
             $rekete .= " ORDER BY nom, prenoms ";
-               dd($rekete);
+            //    dd($rekete);
             $donnees = collect(DB::select($rekete));
 
             session(['config' => 'apprenant']);
@@ -75,6 +75,7 @@ class ApprenantController extends Controller
                 'classannescos'
             ));
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('apprenant')->with('error', 'Une erreur est survenue lors du chargement de la page.');
         }
     }
