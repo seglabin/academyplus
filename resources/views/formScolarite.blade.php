@@ -31,7 +31,7 @@ case 'modifier-composition':
 $lecas = "Modification d'une évaluation au primaire";
 break;
 case 'details-composition':
-$lecas = "Détails d'une évaluation au primaire";
+$lecas = strtoupper("Détails ".(($lenregistrement) ? $lenregistrement->libelle : ""));
 break;
 
 case 'ajout-moyenne-periode':
@@ -328,6 +328,10 @@ $a = ($lenregistrement) ? $lenregistrement : null;
         @php
         //dd($donnees);
         $disabled = ($config =='details-composition')?'disabled':'';
+        $coltitre = "";
+        $coldata =  "";
+        $donneeimprim = array();
+
         @endphp
 
         <div class="col-md-3 mb-2">
@@ -376,16 +380,35 @@ $a = ($lenregistrement) ? $lenregistrement : null;
             placeholder="Entrez le barême"  id="barem" name="barem"
             value="{{($a != null) ? $a->barem: 20}}">
         </div>
+        <div class="col-md-1 mb-2">
+            <label class=" lelabel" for=""></label>
+            <div class="btn-group btn-group-toggle" style="margin-top:25px;" data-toggle="buttons">                
+                <a class="btn btn-success btnarrondi" href="#" onclick="imprimerPDF();" target="_blank" > <i class="fa fa-print"></i> Imprimer</a>
+                           
+            </div>
+        </div>
         
         <div class="col-md-12 mb-2">
             <table id="letabloz" class="table table-bordered table-striped  " scrol>
+                @php 
+                $coltitre = "N°|Apprenant";
+                $coldata = "num|libapprenant";                
+                @endphp
             <thead>
             <tr>
             <th style="width: 15px;">N°</th>
             <th >Apprenant</th>
-            @foreach($matieres as $m)
+            @foreach($matieres as $k=> $m)
+            @php 
+                $coltitre .= "|".$m->abreviation ; 
+                $coldata .= "|m".$k+1 ; 
+            @endphp
             <th >{{ $m->abreviation }}</th>
             @endforeach
+            @php 
+            $coltitre .= "|Total|Moyenne"; 
+            $coldata .= "|total|moyenne"; 
+            @endphp
             <th >Total</th>
             <th >Moyenne</th>
             </tr>
@@ -398,7 +421,12 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                 @foreach ($donnees as  $d)
                 <input type="hidden" id="id{{ $i }}" name="id{{ $i }}" value="{{ $d->id }}">
                 <input type="hidden" id="idinscription{{ $i }}" name="idinscription{{ $i }}" value="{{ $d->idinscription }}">
-                    <tr>
+                @php
+                    $ln = array();
+                    $ln['num'] = $i + 1;                    
+                    $ln['libapprenant'] = $d->libapprenant;                    
+                @endphp
+                <tr>
                         <td>
                             {{$i+1}}
                         </td> 
@@ -412,9 +440,9 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                          @php
                          $v = "m".$j+ 1;
                          $tot += (($d->$v !=null?$d->$v :-1) > 0)?floatval($d->$v):0;
+                         $ln[$v] = $d->$v !=null?$d->$v :-1;
                          @endphp
-                        <td>         
-
+                        <td>
                             <input style="width:65px;" {{ $disabled }} type="number" id="{{ $v }}_{{ $i }}" name="{{ $v }}_{{ $i }}" onKeyup="controleNote(this);" onchange="calculMoyenne('{{ $i }}');" value="{{ $d->$v !=null?$d->$v :-1}}">
                         </td> 
                          @endforeach
@@ -430,15 +458,24 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                         <td>
                             <input style="width:65px;" type="number" readonly id="moyenne{{ $i }}" name="moyenne{{ $i }}" value="{{ round(floatval($d->moyenne) , 3)}}">
                         </td>                       
-                        
+                        @php
+                         $ln['total'] = round(floatval($tot) , 3); 
+                         $ln['moyenne'] = round(floatval($d->moyenne) , 3); 
+                        @endphp
                     </tr>
                      @php
                 $i++;
+                array_push($donneeimprim, $ln);
                 @endphp
                     @endforeach
                     <input type="hidden" id="taille" name="taille" value="{{ $i }}">
             </tbody>
             </table>
+             @php 
+            session(['donneeimprim' => $donneeimprim]);
+            session(['coltitre' => $coltitre]);
+            session(['coldata' => $coldata]);
+        @endphp
         </div>
 
 

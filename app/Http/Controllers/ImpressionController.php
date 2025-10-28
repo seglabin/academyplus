@@ -37,7 +37,7 @@ class ImpressionController extends Controller
             $hautdoc = array();
             $ln = array();
             $frmat = 'A4';
-            $pag = in_array($config, array('moyenne-periode-apprenant')) ? 'landscape' : 'portrait';
+            $pag = in_array($config, array('moyenne-periode-apprenant','details-composition')) ? 'landscape' : 'portrait';
 
             $fichier = $letitre . '.pdf';
             // dd($donneeimprim);

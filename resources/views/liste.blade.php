@@ -20,12 +20,10 @@ $idanEncours = $anEncours!= null?$anEncours->id:null;
 $idabonnementEncours = $abonnementEncours!= null?$abonnementEncours->id:null;
 $codeRoleEncours = $roleEncours!= null?$roleEncours->code:null;
 
-   $coltitre = "";// "N°";
-    $coldata =  "";// "num";
+   $coltitre = "";
+    $coldata =  "";
     $donneeimprim = array();
  
-
-
 //echo $config;
 switch ($config) {
 case 'role':
