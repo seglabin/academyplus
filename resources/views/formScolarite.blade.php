@@ -354,6 +354,10 @@ $a = ($lenregistrement) ? $lenregistrement : null;
            
         }
 unset($ligne); // casser la référence après la boucle
+
+ $colonneNom = array_column($data, 'libapprenant');
+
+        array_multisort($colonneNom, SORT_ASC, $data);
 $donnees = collect($data);
 
       //  dd($data);
