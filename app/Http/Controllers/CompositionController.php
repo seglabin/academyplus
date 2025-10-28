@@ -116,7 +116,7 @@ class CompositionController extends Controller
         $m1 = ", COALESCE((SELECT m1 FROM moyennecompos m WHERE m.idinscription = ins.id AND idcompo = '" . $idenreg . "' ),'') m1 ";
 
 
-        $rekete = "SELECT ins.id idinscription, CONCAT(nom,' ', prenoms) libapprenant " . $id . $moyenne;
+        $rekete = "SELECT ins.id idinscription, CONCAT(nom,' ', prenoms) libapprenant, ' ' rang " . $id . $moyenne;
         for ($i = 1; $i <= 12; $i++) {
             $rekete .= ", COALESCE((SELECT m" . $i . " FROM moyennecompos m WHERE m.idinscription = ins.id AND idcompo = '" . $idenreg . "' ),'') m" . $i . " ";
         }

@@ -326,11 +326,37 @@ $a = ($lenregistrement) ? $lenregistrement : null;
         @case('modifier-composition')
         @case('details-composition')
         @php
-        //dd($donnees);
+       
         $disabled = ($config =='details-composition')?'disabled':'';
         $coltitre = "";
         $coldata =  "";
         $donneeimprim = array();
+         
+
+        //Tri des données par moyenne décroissante
+        $data = $donnees->toArray();
+       
+        
+        $colonneMoy = array_column($data, 'moyenne');
+        $colonneNom = array_column($data, 'libapprenant');
+
+        array_multisort($colonneMoy, SORT_DESC, $colonneNom, SORT_ASC, $data);
+        $i = 1;
+        foreach ($data as &$ligne) {
+            $ligne->rang= $i.($i==1?'er':'ème'); 
+            $moy = $ligne->moyenne;
+            $rg =$i.($i==1?'er':'ème'); 
+            if($i>1 && $ligne->moyenne == $data[$i-2]->moyenne  )
+                {
+                $ligne->rang= str_replace(" ex aequo", "", $data[$i-2]->rang) ." ex aequo";
+                }
+            $i++;        
+           
+        }
+unset($ligne); // casser la référence après la boucle
+$donnees = collect($data);
+
+      //  dd($data);
 
         @endphp
 
@@ -406,11 +432,12 @@ $a = ($lenregistrement) ? $lenregistrement : null;
             <th >{{ $m->abreviation }}</th>
             @endforeach
             @php 
-            $coltitre .= "|Total|Moyenne"; 
-            $coldata .= "|total|moyenne"; 
+            $coltitre .= "|Total|Moyenne|Rang"; 
+            $coldata .= "|total|moyenne|rang"; 
             @endphp
             <th >Total</th>
             <th >Moyenne</th>
+            <th >Rang</th>
             </tr>
             </thead>
             <tbody>
@@ -458,9 +485,13 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                         <td>
                             <input style="width:65px;" type="number" readonly id="moyenne{{ $i }}" name="moyenne{{ $i }}" value="{{ round(floatval($d->moyenne) , 3)}}">
                         </td>                       
+                        <td>
+                            <input style="width:65px;" type="text" readonly id="rang{{ $i }}" name="rang{{ $i }}" value="{{ $d->rang}}">
+                        </td>                       
                         @php
                          $ln['total'] = round(floatval($tot) , 3); 
                          $ln['moyenne'] = round(floatval($d->moyenne) , 3); 
+                         $ln['rang'] = $d->rang; 
                         @endphp
                     </tr>
                      @php
@@ -472,6 +503,11 @@ $a = ($lenregistrement) ? $lenregistrement : null;
             </tbody>
             </table>
              @php 
+//Tri des données par moyenne décroissante
+$colonneMoy = array_column($donneeimprim, 'moyenne');
+array_multisort($colonneMoy, SORT_DESC, $donneeimprim);
+
+
             session(['donneeimprim' => $donneeimprim]);
             session(['coltitre' => $coltitre]);
             session(['coldata' => $coldata]);
