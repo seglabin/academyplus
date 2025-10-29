@@ -103,6 +103,7 @@
         var moy = (n > 0) ? (s / n) : -1;
         moy = parseFloat(moy.toFixed(2));
 
+        $('#total' + j).val(s);
         $('#moyenne' + j).val(moy);
     }
 
@@ -238,8 +239,6 @@
     }
 
     function typetelephone(X) { //alert(X.name);
-
-
         result = "";
         cpt = 0;
 

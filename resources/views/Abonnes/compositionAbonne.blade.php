@@ -67,6 +67,7 @@
                         @foreach($matieres as $m)
                             <th>{{ $m->abreviation }}</th>
                         @endforeach
+                        <th>Total</th>
                         <th>Moyenne</th>
                     </tr>
                 </thead>
@@ -82,12 +83,17 @@
                             <td>
                                 {{$i + 1}}
                             </td>
+                            @php
+                                $total = 0;
+                            @endphp
                             <td>
                                 {{$d->libapprenant}}
                             </td>
                             @foreach($matieres as $j => $m)
                                 @php
                                     $v = "m" . $j + 1;
+                                    $va = ($d->$v != null) ? floatval($d->$v) : 0;
+                                    $total += ($va > 0) ? floatval($va) : 0;
                                  @endphp
                                 <td>
                                     <input style="width:65px;" type="number" id="{{ $v }}_{{ $i }}" name="{{ $v }}_{{ $i }}"
@@ -102,6 +108,10 @@
                                 @endfor
 
                             @endif
+                            <td>
+                                <input style="width:65px;" type="number" readonly id="total{{ $i }}"
+                                    name="total{{ $i }}" value="{{ round($total, 3)}}">
+                            </td>
                             <td>
                                 <input style="width:65px;" type="number" readonly id="moyenne{{ $i }}"
                                     name="moyenne{{ $i }}" value="{{ round(floatval($d->moyenne), 3)}}">

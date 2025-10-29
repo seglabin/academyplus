@@ -70,22 +70,14 @@ class ClassannescoController extends Controller
             // // dd($idanSel);
             // session(['idanEncours' => $idanSel]);
             $idabonnement = session('idabonnementEncours');
-            // if (isset($_GET['idanSel']) && $changeAnSel ==1) {
-            //     // if($changeAnSel == 1) 
-            //         $idclas = null;
-            //     session(['laclassEncour' => null]);
-            //     session(['idclassannescosEncours' => $idclas]);
-            //     $idanneescolaire = $_GET['idanSel'];
-            // }
-            // $idclas = isset($_GET['idclassannescosEncours']) ? $_GET['idclassannescosEncours'] : null;
+           
             if ($idclas) {
                 $clas = classannesco::find($idclas);
                 // dd($clas);
                 session(['idanneescolaire' => $clas->idanneescolaire]);
                 session(['idabonnement' => $clas->idabonnement]);
                 session(['idclassannescosEncours' => $idclas]);
-                session(['laclassEncour' => $clas]);
-                // $idabonnement = $clas->idabonnement; laclassEncour
+                session(['laclassEncour' => $clas]);                
                 $idanneescolaire = $clas->idanneescolaire;
                 $rekete = "";
 
