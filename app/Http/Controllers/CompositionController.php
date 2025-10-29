@@ -135,7 +135,7 @@ class CompositionController extends Controller
         $matieres = collect(DB::select($rekmat));
         //dd($rekmat);
         //dd(count($matieres));
-dd($conf);
+// dd($conf);
         return view('formScolarite', compact(
             'lenregistrement',
             'idenreg',
