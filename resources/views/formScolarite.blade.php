@@ -410,13 +410,15 @@ $donnees = collect($data);
             placeholder="Entrez le barême"  id="barem" name="barem"
             value="{{($a != null) ? $a->barem: 20}}">
         </div>
-        <div class="col-md-1 mb-2">
-            <label class=" lelabel" for=""></label>
-            <div class="btn-group btn-group-toggle" style="margin-top:25px;" data-toggle="buttons">                
-                <a class="btn btn-success btnarrondi" href="#" onclick="imprimerPDF();" target="_blank" > <i class="fa fa-print"></i> Imprimer</a>
-                           
-            </div>
-        </div>
+        @if (in_array($config, ['details-composition']))
+            <div class="col-md-1 mb-2">
+                <label class=" lelabel" for=""></label>
+                <div class="btn-group btn-group-toggle" style="margin-top:25px;" data-toggle="buttons">                
+                    <a class="btn btn-success btnarrondi" href="#" onclick="imprimerPDF();" target="_blank" > <i class="fa fa-print"></i> Imprimer</a>
+                            
+                </div>
+            </div>        
+        @endif
         
         <div class="col-md-12 mb-2">
             <table id="letabloz" class="table table-bordered table-striped  " scrol>

@@ -47,7 +47,7 @@ class ApprenantController extends Controller
             $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
 
             $rekete = " SELECT a.*, npi, nom, prenoms, contactparent , CONCAT(nom, ' ', prenoms) libapprenant, photo  " . $idinscription . $clas.$libclas. $sexe . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
-            $rekete .= "FROM apprenants a, personnes pe WHERE a.idpersonne = pe.id";
+            $rekete .= "FROM apprenants a, personnes pe WHERE a.idpersonne = pe.id ";
             if ($idclassannesco != null && $idclassannesco != 0) {
                 $rekete .= " AND a.id IN ( SELECT idapprenant FROM inscriptions WHERE idclassannesco = '" . $idclassannesco . "' ) ";
             } else {

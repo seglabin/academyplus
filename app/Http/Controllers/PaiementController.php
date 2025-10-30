@@ -16,7 +16,8 @@ class PaiementController extends Controller
 {
 
     public function index(Request $request)
-    {   //dd($request); 
+    {   
+        // dd($request); 
         try {
             $idabonnement = ($request->idabonnement) ? $request->idabonnement : (session('idabonnement') != null ? session('idabonnement') : session('idabonnementEncours'));
             $idclassannesco = ($request->idclassannesco) ? $request->idclassannesco : (session('idclassannesco') != null ? session('idclassannesco') : null);
@@ -43,12 +44,12 @@ class PaiementController extends Controller
             $idinscrip = $inscriptions->pluck('id')->toArray();
 
             $rekete = "SELECT p.*, CONCAT(nom,' ', prenoms) libapprenant, libelle libmotif ";
-            $rekete .= " FROM paiements p, inscriptions ins, apprenants a, elements e ";
+            $rekete .= " FROM paiements p, inscriptions ins, apprenants a, elements e, personnes pe ";
             $rekete .= " WHERE p.idinscription = ins.id AND ins.idapprenant = a.id AND e.id = p.idmotif ";
-            $rekete .= " AND idclassannesco = '" . $idclassannesco . "'";
+            $rekete .= " AND a.idpersonne = pe.id AND idclassannesco = '" . $idclassannesco . "'";
             $rekete .= " ORDER BY datepaiement ";
-            $donnees = collect(DB::select($rekete));
             // dd($rekete);
+            $donnees = collect(DB::select($rekete));
 
             session(['config' => 'paiement']);
             return view('liste', compact(
@@ -107,8 +108,8 @@ class PaiementController extends Controller
         $classannescos = collect(DB::select($rekclas));
 
         $rekappr = "SELECT ins.*, CONCAT(nom,' ', prenoms) libapprenant ";
-        $rekappr .= " FROM inscriptions ins, apprenants a ";
-        $rekappr .= " WHERE ins.idapprenant = a.id AND idclassannesco = '" . $idclassannesco . "' ";
+        $rekappr .= " FROM inscriptions ins, apprenants a, personnes pe ";
+        $rekappr .= " WHERE a.idpersonne = pe.id AND ins.idapprenant = a.id AND idclassannesco = '" . $idclassannesco . "' ";
         $rekappr .= " ORDER BY libapprenant ";
         $apprenants = collect(DB::select($rekappr));
 
