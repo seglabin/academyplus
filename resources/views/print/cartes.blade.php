@@ -52,9 +52,11 @@
                             <table>
                                 <tr>
                                     <td>
-                                        @if($img != null)
-                                            <img class="logo" src="{{ public_path('storage/images/abonnements/' . $img)}}"
-                                                alt="KK">
+                                        @php
+                                            $imagePath = 'storage/images/abonnements/' . $img;
+                                        @endphp
+                                        @if($img != null && is_file($imagePath))
+                                            <img class="logo" src="{{ public_path($imagePath)}}" alt="KK">
                                         @else
 
                                         @endif
@@ -84,9 +86,15 @@
                                 </tr>
                                 <tr>
                                     <td class="titreCarte" style="width:80%;">Carte scolaire &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        {{ $lannee }}</td>
-                                    <td rowspan="4"><img class="photoPersonne"
-                                            src="{{ public_path('storage/images/Personnes/' . $a['photo'])}}" alt="photo">
+                                        {{ $lannee }}
+                                    </td>
+                                    <td rowspan="4">
+                                        @php
+                                            $photoPath = 'storage/images/Personnes/' . $a['photo'];
+                                        @endphp
+                                        @if(is_file($photoPath))
+                                            <img class="photoPersonne" src="{{ public_path($photoPath)}}" alt="photo">
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
