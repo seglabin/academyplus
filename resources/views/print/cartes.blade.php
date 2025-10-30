@@ -34,20 +34,15 @@
 
 <body>
     @php
-     //dd($donneeimprim);
         $img = ($labonne != null && $labonne->logo != null) ? $labonne->logo : null;
         $lannee = ($lannesco != null && $lannesco->libannee != null) ? $lannesco->libannee : null;
-        
-//dd($lannesco)
-        //dd($cols); lannesco
 
-        //dd($img);
     @endphp
-   
+
     <div class="page">
-               <table>
-                @foreach ($donneeimprim as $i => $a )
-                
+        <table>
+            @foreach ($donneeimprim as $i => $a)
+
                 @if (($i % 2) == 0)
                     <tr>
                 @endif
@@ -88,9 +83,11 @@
                                     <td colspan="2"></td>
                                 </tr>
                                 <tr>
-                                    <td class="titreCarte" style="width:80%;">Carte scolaire &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ $lannee }}</td>
+                                    <td class="titreCarte" style="width:80%;">Carte scolaire &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {{ $lannee }}</td>
                                     <td rowspan="4"><img class="photoPersonne"
-                                            src="{{ public_path('storage/images/Personnes/' . $a['photo'])}}" alt="photo"></td>
+                                            src="{{ public_path('storage/images/Personnes/' . $a['photo'])}}" alt="photo">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -106,7 +103,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <center>
-                                            <b>{{ ($labonne != null && $labonne->titredirecteur != null) ? $labonne->titredirecteur :'Signataire' }}</b>
+                                            <b>{{ ($labonne != null && $labonne->titredirecteur != null) ? $labonne->titredirecteur : 'Signataire' }}</b>
                                             <br>
                                             <br>
                                             {{ ($labonne != null && $labonne->directeur != null) ? $labonne->directeur : 'Nom signataire' }}
@@ -121,7 +118,7 @@
                     @if (($i % 2) != 0)
                         </tr>
                     @endif
-                @endforeach           
+            @endforeach
         </table>
 
     </div>
