@@ -1,7 +1,7 @@
 @php
   use Illuminate\Support\Facades\DB;
   $tparam = explode('|', 'role|permission|rolepermission|anneescolaire|circonscolaire|classetype|matiere|motif|nationalite|ddemp|sessionacademique|personne');
-  $tscolarite = explode('|', 'apprenant|composition|evaluation|paiement|moyenne-annuelle|moyenne-periode|moyenne-generale-periode|moyenne-periode-apprenant');
+  $tscolarite = explode('|', 'apprenant|composition|evaluation|paiement|moyenne-annuelle|moyenne-periode|moyenne-generale-periode|moyenne-periode-apprenant|mvtfinancier');
   $tconfig = explode('|', 'abonnement|classannesco|coefficient|paramfrais');
   $tcompte = explode('|', 'utilisateur');
 
@@ -47,6 +47,10 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
       @if(is_array($menusUser) && in_array(6, $menusUser))
       <li><a style="{{ session('config') == 'apprenant' ? 'color:green; font-weight: bold;' : '' }}"
       href="/apprenant">Apprenants</a></li>
+    @endif
+      @if(is_array($menusUser) && in_array(6, $menusUser))
+      <li><a style="{{ session('config') == 'mvtfinancier' ? 'color:green; font-weight: bold;' : '' }}"
+      href="/mvtfinancier">Cotisation</a></li>
     @endif
     @if(is_array($menusUser) && in_array(7, $menusUser))
       <li><a style="{{ session('config') == 'composition' ? 'color:green; font-weight: bold;' : '' }}"

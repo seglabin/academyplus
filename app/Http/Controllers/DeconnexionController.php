@@ -9,22 +9,27 @@ use Illuminate\Support\Facades\Auth;
 
 class DeconnexionController extends Controller
 {
-    public function deconnecter(){
-         try {
-             $utilisateur = User::where('id',Auth::user()->id)->first();
-             $utilisateur->statut = false;
-             $utilisateur->save();
-             
-             $historique = historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-             $historique->status = false;
-             $historique->save(); 
-             
-             auth()->logout();
+    public function deconnecter()
+    {
+        try {
+
+            $aut = Auth::user();
+            if ($aut) {
+                $utilisateur = User::where('id', Auth::user()->id)->first();
+                $utilisateur->statut = false;
+                $utilisateur->save();
+
+                $historique = historique::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+                $historique->status = false;
+                $historique->save();
+
+                auth()->logout();
+            }
             //  dd('here');
-        return redirect()->route('login');
+            return redirect()->route('login');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back();
         }
-     }
+    }
 }

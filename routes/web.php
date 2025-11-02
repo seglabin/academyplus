@@ -27,6 +27,7 @@ use App\Http\Controllers\MoyenneController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\PersonneController;
 use App\Http\Controllers\ImpressionController;
+use App\Http\Controllers\MvtfinancierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,6 +125,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/modifier-paiement/{id}', [PaiementController::class, 'formModif']);
     Route::POST('/enregistrer-paiement', [PaiementController::class, 'enregistrer']);
     Route::get('/supprimer-paiement/{id}', [PaiementController::class, 'supprimer']);
+
+    // ===========-------------mvtfinancier----------===========
+    Route::get('/mvtfinancier', [MvtfinancierController::class, 'index'])->name('mvtfinancier');
+    Route::get('/ajout-paiement', [MvtfinancierController::class, 'form']);
+    Route::get('/modifier-paiement/{id}', [MvtfinancierController::class, 'formModif']);
+    Route::POST('/enregistrer-mvtfinancier', [MvtfinancierController::class, 'enregistrer']);
+    Route::get('/supprimer-paiement/{id}', [MvtfinancierController::class, 'supprimer']);
 
     // ===========-------------Gestion des utilisateurs----------===========
     Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur');

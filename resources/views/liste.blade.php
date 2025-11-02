@@ -219,6 +219,17 @@ $lienModif = "modifier-permission/";
 $lienSuppr = "supprimer-permission/";
 break;
 
+case 'mvtfinancier':
+$lecas = "Liste des cotisations des apprenants";
+$lienAjout = "/ajout-mvtfinancier";
+$coltitre .= "Apprenant|Total cotatisation|Motif";
+$coldata .= "libapprenant|totalmontant|libmotif";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
+$lienModif = "modifier-mvtfinancier/";
+$lienSuppr = "supprimer-mvtfinancier/";
+break;
+
 case 'element':
 $lecas = $titre;
 $lienAjout = "/ajout-element";
@@ -416,9 +427,11 @@ $coldata =  "num|".$coldata;
                     <td>
                         <div class="flex justify-center items-center">
                             @if(is_array($menusUser) && in_array(3, $menusUser))
-                            <a class="flex items-center mr-3" href="/{{$lienModif . $d->id}}" title="Modifier "><img
-                                    src="{{asset('assets/img/iconbutton/modif.png')}}"
-                                    style="width: 24px;  height: 24px;" /> </a>
+                            @if (!in_array($config,array('mvtfinancier')))
+                                <a class="flex items-center mr-3" href="/{{$lienModif . $d->id}}" title="Modifier "><img
+                                        src="{{asset('assets/img/iconbutton/modif.png')}}"
+                                        style="width: 24px;  height: 24px;" /> </a>                            
+                            @endif
                             @endif
 
                             @if ($config == 'composition')
@@ -448,10 +461,22 @@ $coldata =  "num|".$coldata;
 
 
                             @if(is_array($menusUser) && in_array(2, $menusUser))
-                            <a class="flex items-center text-danger" href="#" onclick="supprimer({{$d->id}});"
-                               title="Suprimer "> <img src="{{asset('assets/img/iconbutton/annuler.png')}}"
-                                                    alt="Supprimer" style="width: 24px;  height: 24px;" /> </a>
+                                @if (!in_array($config,array('mvtfinancier')))
+                                <a class="flex items-center text-danger" href="#" onclick="supprimer({{$d->id}});"
+                                title="Suprimer "> <img src="{{asset('assets/img/iconbutton/annuler.png')}}"
+                                                        alt="Supprimer" style="width: 24px;  height: 24px;" /> </a>
+                                @endif    
                             @endif    
+
+                            @if ($config == 'mvtfinancier')
+
+                                <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalPaiement{{ $i }}" title=" Détails cotisation "> <i class="bi bi-boxes"></i>  </a>
+
+                                <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalPaiement{{ $i }}" title=" Retrait"> <i class="bi bi-boxes"></i>  </a>
+                            
+                            @endif
 
                             @if ($config == 'apprenant')
                             @php
@@ -466,7 +491,12 @@ $coldata =  "num|".$coldata;
                             <a class="flex items-center text-danger" href="#" data-toggle="modal"
                                data-target="#modalPaiement{{ $i }}"
                                title="Les paiements de l'apprenant "> <i class="bi bi-diagram-3-fill"></i>  </a>
-                            @endif
+                           
+                           <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> <img
+                                    src="{{asset('assets/img/iconbutton/cotisation1.jpeg')}}"
+                                    style="width: 24px;  height: 24px;"  /> </a>
+                               @endif
 
 
                         </div>
@@ -480,6 +510,8 @@ $coldata =  "num|".$coldata;
                     <!-- Modal Paiement apprenant-->
                     @include('includes.modalPaiementApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])
                     <!-- Fin Paiement apprenant -->
+                    <!-- Modal Cotisation apprenant-->
+                    @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])                     <!-- Fin Cotisation apprenant -->
                     @endif
                     @if ($config=='utilisateur')
                     <!-- Modal Affectation -->
@@ -532,7 +564,7 @@ $coldata =  "num|".$coldata;
     let btn = document.getElementById(cas);
     btn.setAttribute("data-toggle", "modal");
     btn.setAttribute("data-target", "#modalAffectation");
-    // alert(btn);
+    alert(btn);
     }
 
     function afficheModalReinit(id) {  //alert(cas);        
@@ -583,6 +615,25 @@ $coldata =  "num|".$coldata;
         document.forms["myformModal" + i].method = 'POST';
         document.forms["myformModal" + i].action = act;
         document.forms["myformModal" + i].submit();
+        }
+
+    }
+
+    function validerCotisationModale(i) {
+        let  chps = 'datemvt' + i + '|montant' + i ;
+        let labels = "la date de cotisation|le montant payé";
+        let act = '/enregistrer-mvtfinancier';
+        if (controleVide(chps, labels)) {
+        //  alert(act); 
+        const newInput = document.createElement('input');
+        newInput.type = 'hidden';
+        newInput.name = 'num';
+        newInput.id = 'num';
+        newInput.value = i;
+        document.forms["formModalCotisation" + i].append(newInput);
+        document.forms["formModalCotisation" + i].method = 'POST';
+        document.forms["formModalCotisation" + i].action = act;
+        document.forms["formModalCotisation" + i].submit();
         }
 
     }
