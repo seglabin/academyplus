@@ -40,10 +40,15 @@ use App\Http\Controllers\MvtfinancierController;
 |
 */
 
-// Route::get('/', function () {
-//     session(['config' => '']);
-//     return view('accueil');
-// });
+Route::get('/accueil', function () {
+    // session(['config' => '']);
+    return view('public.bienvenue');
+})->name('bienvenue');
+
+Route::get('/decouvrir', function () {
+    // session(['config' => '']);
+    return view('public.presentation');
+})->name('decouvrir');
 
 // Route::get('/classes', function () {
 //     // session(['config' => '']);
@@ -54,6 +59,7 @@ Route::get('/login', function () {
     session(['config' => '']);
     return view('login');
 })->name('login');
+
 Route::get('/deconnecter', [DeconnexionController::class, 'deconnecter'])->name('deconnecter');
 
 // Route::get('/cartes', function () {

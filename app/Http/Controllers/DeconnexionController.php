@@ -26,7 +26,8 @@ class DeconnexionController extends Controller
                 auth()->logout();
             }
             //  dd('here');
-            return redirect()->route('login');
+            return redirect()->route('bienvenue');
+            // return redirect()->route('login');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back();
