@@ -90,8 +90,8 @@ class ClassannescoController extends Controller
 
                         if (isset($_GET['matricule'])) {
                             $lenregistrement = apprenant::where('matricule', $_GET['matricule'])->first();
-                            $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? personne::find($lenregistrement->idpersonne) : null;
                         }
+                        $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? personne::find($lenregistrement->idpersonne) : null;
                         if (isset($_GET['npi']) && $_GET['npi'] != "") {
                             $lapersonne = personne::where('npi', $_GET['npi'])->first();
                         }
