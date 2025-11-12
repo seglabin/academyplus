@@ -8,8 +8,8 @@
     switch ($module) {
         case 'listeApprenant':
             $modif = 'inscriptionAbonne';
-            $coltitre .= "NPI|N° EDUCMASTER|Nom|Prénoms|Contact parent|Tot. à payer|Tot. Payé|Reste à payer";
-            $coldata .= "npi|matricule|nom|prenoms|contactparent|totscolarite|totpaye|reste";
+            $coltitre .= "NPI|N° EDUCMASTER|Nom|Prénoms|Contact parent|Classe actuelle|Tot. à payer|Tot. Payé|Reste à payer";
+            $coldata .= "npi|matricule|nom|prenoms|contactparent|classeactuelle|totscolarite|totpaye|reste";
             $tires = explode('|', $coltitre);
             $cols = explode('|', $coldata);
             $lienSuppr = "supprimer-apprenant";
@@ -45,7 +45,7 @@
             @foreach ($tires as $t)
                 <th>{{ $t }}</th>
             @endforeach
-            <th> Actions </th>
+            <th style="width: 100px;"> Actions </th>
         </tr>
     </thead>
     <tbody>
@@ -76,18 +76,23 @@
                             <a class="flex items-center mr-3" href="/details-composition/{{ $d->id}}" title="Détails "> <i
                                     class="bi bi-eye"></i> </a>
                         @endif
-                        @if ($module == 'listeApprenant') 
-                        <a class="flex items-center mr-3" href="#" data-toggle="modal"
-                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> 💰 </a>                            
-                          
-                                <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i class="bi bi-boxes"></i>  </a>
+                        @if ($module == 'listeApprenant')
+                            <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                                data-target="#modalCotisationApprenant{{ $i }}" title="Payer une cotisation "> 💰 </a>
 
-                                <!-- Modal Affectation -->
-                                @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id])
-                                <!-- Fin Modal Affectation -->
-                               @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription]) 
-                               @endif
+                            <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i
+                                    class="bi bi-boxes"></i> </a>
+
+                            <!-- Modal Affectation -->
+                            @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id])
+                            <!-- Fin Modal Affectation -->
+                            @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])
+                        @php
+                             $ln['sexe'] = $d->sexe;
+                             $ln['photo'] = $d->photo;
+                            @endphp
+                            @endif
                         @if(is_array($menusUser) && (in_array(2, $menusUser) || in_array(30, $menusUser)))
                             <a class="flex items-center text-danger" href="#"
                                 onclick="supprimer('{{$d->id}}','{{ $module}}','{{ $lienSuppr}}');" title="Suprimer "> <img
@@ -104,10 +109,10 @@
     </tbody>
 </table>
 @php 
-    session(['donneeimprim' => $donneeimprim]);
+        session(['donneeimprim' => $donneeimprim]);
     session(['coltitre' => $coltitre]);
     session(['coldata' => $coldata]);
 @endphp
 <script>
-    
+
 </script>

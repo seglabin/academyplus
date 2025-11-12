@@ -67,7 +67,7 @@ class ClassannescoController extends Controller
             session(['module' => $module]);
             session(['idenreg' => $idenreg]);
             $lenregistrement = null;
-             $lapersonne = null;
+            $lapersonne = null;
 
             // $idanSel = (isset($_GET['idanSel']) > 0 && $_GET['idanSel'] != null) ? $_GET['idanSel'] : (session('idanEncours') != null ? session('idanEncours') : null);
             // // dd($idanSel);
@@ -160,8 +160,11 @@ class ClassannescoController extends Controller
                         $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY p.idinscription ORDER BY ins.id ),'0')  ";
 
                         $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
+                        $sexe = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = p.idsexe),'') sexe ";
+                        $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+                        $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
 
-                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
+                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent,photo, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ' . $sexe. $clas.$libclas;
 
                         $rekete .= " FROM apprenants a, inscriptions ins, personnes p ";
                         $rekete .= " WHERE a.id = ins.idapprenant AND p.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";
