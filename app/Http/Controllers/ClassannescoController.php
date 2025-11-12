@@ -165,6 +165,8 @@ class ClassannescoController extends Controller
 
                         $rekete .= " FROM apprenants a, inscriptions ins, personnes p ";
                         $rekete .= " WHERE a.id = ins.idapprenant AND p.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";
+                        // $rekete .= " GROUP BY a.id ";
+                        $rekete .= " ORDER BY libapprenant ";
                         break;
 
                     default:
