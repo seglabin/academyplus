@@ -139,7 +139,7 @@ function afficheModal($cas)
 function lesclassesAnnesco($iduser, $idrole, $idabonnement, $idan)
 {
     // Liste des classes de l'abonné pour l'année scolaire
-    $rekclas = " SELECT ca.*,libelle, CONCAT(sigle,' ', groupe) sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  ";
+    $rekclas = " SELECT ca.*,libelle, CONCAT(sigle,' ', COALESCE(groupe, '')) sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  ";
     $rekclas .= " FROM classannescos ca,classetypes c ";
     $rekclas .= " WHERE c.id = ca.idclasse ";
     $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idan . "' ";
