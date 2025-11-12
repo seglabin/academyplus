@@ -64,7 +64,7 @@
                                     <td>
                                         <div class="col-xs-10" style="padding: 2px;">
                                             <center>
-                                                <b> REPUBLIQUE DU BENIN  dd</b>
+                                                <b> REPUBLIQUE DU BENIN</b>
                                                 <br>
                                                 <b>MINISTERE DES ENSEIGNEMENTS</b>
                                                 <br>
