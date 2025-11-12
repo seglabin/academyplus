@@ -17,7 +17,7 @@ class ClassannescoController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request);
+        //  dd($request);
         try {
 
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";

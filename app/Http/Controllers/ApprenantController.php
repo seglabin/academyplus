@@ -33,10 +33,11 @@ class ApprenantController extends Controller
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
             $annescolaires = collect(DB::select($rekan));
 
-            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',groupe) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
             $rekclas .= " WHERE c.id = ca.idclasse ";
             $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
             $rekclas .= " ORDER BY libclasse ";
+            // dd($rekclas);
             $classannescos = collect(DB::select($rekclas));
 
             $sexe = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = pe.idsexe),'') sexe ";
