@@ -33,7 +33,7 @@ class CompositionController extends Controller
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
             $annescolaires = collect(DB::select($rekan));
 
-            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',groupe) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
             $rekclas .= " WHERE c.id = ca.idclasse ";
             $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
             $rekclas .= " ORDER BY libclasse ";
@@ -47,7 +47,7 @@ class CompositionController extends Controller
 
             $session = ", COALESCE((SELECT libelle FROM sessionacademiques sa WHERE ev.idsession = sa.id ),'') libsession ";
 
-            $rekete = " SELECT ev.*, CONCAT(c.libelle, groupe) libclas " .$session;
+            $rekete = " SELECT ev.*, CONCAT(c.libelle, ' ', COALESCE(groupe, '')) libclas " .$session;
             $rekete .= " FROM compositions ev, classannescos ca , classetypes c ";
             $rekete .= " WHERE ev.idclassannesco = ca.id AND ca.idclasse = c.id  ";
             $rekete .= " AND ca.idabonnement = '" . $idabonnement . "' AND ca.idanneescolaire = '" . $idanneescolaire . "' ";

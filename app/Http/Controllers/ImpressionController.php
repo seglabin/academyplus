@@ -28,7 +28,7 @@ class ImpressionController extends Controller
             $config = session('config') != null ? session('config') : '';
             $labonne = $idabonnement != null ? collect(DB::select(" SELECT * FROM abonnements WHERE id = '" . $idabonnement . "' "))->first() : null;
             $lannesco = $idanneescolaire != null ? collect(DB::select(" SELECT a.*, CONCAT(andebut,' - ',(andebut + 1)) libannee FROM anneescolaires a WHERE id = '" . $idanneescolaire . "' "))->first() : null;
-            $laclannesco = $idclassannesco != null ? collect(DB::select(" SELECT ca.*, CONCAT(libelle, ' ', groupe) libclas FROM classannescos ca , classetypes c WHERE ca.idclasse = c.id AND  ca.id = '" . $idclassannesco . "' "))->first() : null;
+            $laclannesco = $idclassannesco != null ? collect(DB::select(" SELECT ca.*, CONCAT(libelle, ' ', COALESCE(groupe, '')) libclas FROM classannescos ca , classetypes c WHERE ca.idclasse = c.id AND  ca.id = '" . $idclassannesco . "' "))->first() : null;
             $lapprenant = $idinscription != null ? collect(DB::select(" SELECT ins.*, CONCAT(nom, ' ', prenoms) libapprenant FROM inscriptions ins, apprenants a , personnes p WHERE a.idpersonne = p.id AND ins.idapprenant = a.id AND  ins.id = '" . $idinscription . "' "))->first() : null;
             $lasession = $idsession != null ? collect(DB::select(" SELECT * FROM sessionacademiques WHERE id = '" . $idsession . "' "))->first() : null;
             $donneeimprim = session('donneeimprim') != null ? session('donneeimprim') : array();

@@ -38,7 +38,7 @@ class MoyperiodapprenantsController extends Controller
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
             $annescolaires = collect(DB::select($rekan));
 
-            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',groupe) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
             $rekclas .= " WHERE c.id = ca.idclasse ";
             $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
             $rekclas .= " ORDER BY libclasse ";
@@ -52,7 +52,7 @@ class MoyperiodapprenantsController extends Controller
 
             $session = ", COALESCE((SELECT libelle FROM sessionacademiques sa WHERE m.idsession = sa.id ),'') libsession ";
 
-            $rekete = " SELECT m.*, CONCAT(c.libelle, groupe) libclas, ma.libelle libmatiere " . $session;
+            $rekete = " SELECT m.*, CONCAT(c.libelle, ' ', COALESCE(groupe, '')) libclas, ma.libelle libmatiere " . $session;
             $rekete .= " FROM moyperiodapprenants m, classannescos ca , classetypes c, matieres ma ";
             $rekete .= " WHERE m.idclassannesco = ca.id AND ca.idclasse = c.id  AND m.idmatiere = ma.id";
             // $rekete .= " AND ca.idabonnement = '" . $idabonnement . "' AND ca.idanneescolaire = '" . $idanneescolaire . "' ";
@@ -240,7 +240,7 @@ class MoyperiodapprenantsController extends Controller
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
             $annescolaires = collect(DB::select($rekan));
 
-            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',groupe) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
             $rekclas .= " WHERE c.id = ca.idclasse ";
             $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
             $rekclas .= " ORDER BY libclasse ";
@@ -332,7 +332,7 @@ class MoyperiodapprenantsController extends Controller
             $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
             $annescolaires = collect(DB::select($rekan));
 
-            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',groupe) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
             $rekclas .= " WHERE c.id = ca.idclasse ";
             $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
             $rekclas .= " ORDER BY libclasse ";

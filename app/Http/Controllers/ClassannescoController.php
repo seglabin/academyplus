@@ -145,7 +145,7 @@ class ClassannescoController extends Controller
                         break;
 
                     case 'listeCompositionAbonne':
-                        $rekete = " SELECT ev.*, CONCAT(c.libelle, groupe) libclas ";
+                        $rekete = " SELECT ev.*, CONCAT(c.libelle, ' ', COALESCE(groupe, '')) libclas ";
                         $rekete .= " FROM compositions ev, classannescos ca , classetypes c ";
                         $rekete .= " WHERE ev.idclassannesco = ca.id AND ca.idclasse = c.id  ";
                         $rekete .= " AND ca.idabonnement = '" . $idabonnement . "' AND ca.idanneescolaire = '" . $idanneescolaire . "' ";
@@ -155,14 +155,14 @@ class ClassannescoController extends Controller
 
                     case 'listeApprenant':
                         // $rekete = " SELECT a.*, CONCAT(nom, ' ', prenoms) libapprenant ";
-                        $clas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+                        $clas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
                         $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
                         $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY p.idinscription ORDER BY ins.id ),'0')  ";
 
                         $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
                         $sexe = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = p.idsexe),'') sexe ";
-                        $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
-                        $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', groupe) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
+                        $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+                        $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
 
                         $rekete = " SELECT a.*, npi, nom, prenoms, contactparent,photo, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ' . $sexe. $clas.$libclas;
 

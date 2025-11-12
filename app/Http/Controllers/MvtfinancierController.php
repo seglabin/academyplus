@@ -103,7 +103,7 @@ class MvtfinancierController extends Controller
                 $e->datemvt = $datemvt;
                 $e->typemvt = $typemvt;
                 $e->reference = $reference;
-                $e->montant = $montant;
+                $e->montant = sansespace($montant);
                 $e->idpayeur = $idpayeur;
                 $e->payeur = $payeur;
                 $e->idmotif = $idmotif;
@@ -165,7 +165,7 @@ class MvtfinancierController extends Controller
                 $e->datemvt = $datemvt;
                 $e->typemvt = $typemvt;
                 $e->reference = $reference;
-                $e->montant = $montant;
+                $e->montant = sansespace($montant);
                 $e->idpayeur = $idpayeur;
                 $e->payeur = $payeur;
                 $e->idmotif = $idmotif;
