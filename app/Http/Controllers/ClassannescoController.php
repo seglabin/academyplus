@@ -11,6 +11,8 @@ use App\Models\paiement;
 use Illuminate\Support\Facades\DB;
 use App\Models\anneescolaire;
 use App\Models\composition;
+use App\Models\personne;
+
 class ClassannescoController extends Controller
 {
     public function index(Request $request)
@@ -65,31 +67,35 @@ class ClassannescoController extends Controller
             session(['module' => $module]);
             session(['idenreg' => $idenreg]);
             $lenregistrement = null;
+             $lapersonne = null;
 
             // $idanSel = (isset($_GET['idanSel']) > 0 && $_GET['idanSel'] != null) ? $_GET['idanSel'] : (session('idanEncours') != null ? session('idanEncours') : null);
             // // dd($idanSel);
             // session(['idanEncours' => $idanSel]);
             $idabonnement = session('idabonnementEncours');
-           
+
             if ($idclas) {
                 $clas = classannesco::find($idclas);
                 // dd($clas);
                 session(['idanneescolaire' => $clas->idanneescolaire]);
                 session(['idabonnement' => $clas->idabonnement]);
                 session(['idclassannescosEncours' => $idclas]);
-                session(['laclassEncour' => $clas]);                
+                session(['laclassEncour' => $clas]);
                 $idanneescolaire = $clas->idanneescolaire;
                 $rekete = "";
 
                 switch ($module) {
                     case 'inscriptionAbonne':
                         $lenregistrement = apprenant::where('id', $idenreg)->first();
-                        if (isset($_GET['npi']) && isset($_GET['matricule'])) {
-                            if ($_GET['npi'] != "" || $_GET['matricule'] != "") {
-                                $lenregistrement = apprenant::where('npi', $_GET['npi'])
-                                    ->orWhere('matricule', $_GET['matricule'])->first();
-                            }
+
+                        if (isset($_GET['matricule'])) {
+                            $lenregistrement = apprenant::where('matricule', $_GET['matricule'])->first();
+                            $lapersonne = ($lenregistrement != null && $lenregistrement->idpersonne != 0) ? personne::find($lenregistrement->idpersonne) : null;
                         }
+                        if (isset($_GET['npi']) && $_GET['npi'] != "") {
+                            $lapersonne = personne::where('npi', $_GET['npi'])->first();
+                        }
+
                         break;
                     case 'paiementAbonne':
                         $rekappr = "SELECT ins.*, CONCAT(nom,' ', prenoms) libapprenant ";
@@ -153,9 +159,9 @@ class ClassannescoController extends Controller
                         $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
                         $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY p.idinscription ORDER BY ins.id ),'0')  ";
 
-                       $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
-           
-                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent, CONCAT(nom, ' ', prenoms) libapprenant  ".$idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
+                        $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
+
+                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ';
 
                         $rekete .= " FROM apprenants a, inscriptions ins, personnes p ";
                         $rekete .= " WHERE a.id = ins.idapprenant AND p.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";
@@ -176,7 +182,7 @@ class ClassannescoController extends Controller
 
             }
 
-// dd($module);
+            // dd($module);
 
             session(['config' => 'classeAbonne']);
             return view('Abonnes.listeClasse', compact(
@@ -188,7 +194,9 @@ class ClassannescoController extends Controller
                 'leget',
                 'apprenants',
                 'motifs',
-                'matieres'
+                'matieres',
+                'lapersonne'
+
             ));
         } catch (\Exception $e) {
             dd($e);
@@ -210,7 +218,7 @@ class ClassannescoController extends Controller
         // $classetypes = classetype::orderBy('niveau')->get();
         $idanneescolaire = session('idanneescolaire');
         $idabonnement = session('idabonnement');
-        
+
         $classetypes = classetypeParAbonne($idabonnement);
         $labonnement = abonnement::find($idabonnement);
         $lannesco = anneescolaire::find($idanneescolaire);

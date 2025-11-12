@@ -42,7 +42,7 @@ $ins = collect( DB::select($rek))->first();
 <input type="hidden" id='idclassannesco' name='idclassannesco' value="{{$idclasEncours}}">
 <input type="hidden" id='idabonnement' name='idabonnement' value="{{$idabonnementEncours}}">
 <input type="hidden" id='idanneescolaire' name='idanneescolaire' value="{{$idanEncours}}">
-<input type="hidden" id='idpersonne' name='idpersonne' value="{{$idpersonne}}">
+<input type="hidden" id='idpersonne' name='idpersonne' value="{{(isset($leget['idpersonne'])&&$leget['idpersonne']!=null)?$leget['idpersonne']:(($lapersonne != null) ? $lapersonne->id : old('idpersonne'))}}">
 <input type="hidden" id='idinscription' name='idinscription' value="{{($ins != null) ? $ins->id:0}}">
 <div class="card " style="padding: 20px">
     <div class="row">
@@ -55,7 +55,7 @@ $ins = collect( DB::select($rek))->first();
 
                         <input type="text" class="custom-search-input"
                                placeholder="Entrez NPI" onchange="" onKeyup="enMajuscule('npi');" id="npi" name="npi"
-                               value="{{(isset($leget['npi'])&&$leget['npi']!=null)?$leget['npi']:($npi)}}">
+                               value="{{(isset($leget['npi'])&&$leget['npi']!=null)?$leget['npi']:(($lapersonne != null) ? $lapersonne->npi : old('npi'))}}">
                         <div class="input-group-append">
                             <button class="custom-search-botton btn btn-outline-success " type="button" onclick="onChangeGet('{{$config}}')"><i class="bi bi-search"></i></button>
                         </div>
@@ -77,48 +77,48 @@ $ins = collect( DB::select($rek))->first();
                 <div class="col-md-3 mb-2">
                     <label class="lelabel" for="">Nationalité</label>
                     @php    
-                    echo chargerCombo($nationalites, 'id', 'libelle', 'idnationalite', 'Choisir une nationalité','','',(isset($leget['idnationalite'])&&$leget['idnationalite']!=0)?$leget['idnationalite']:(($a != null) ? $a->idnationalite : old('idnationalite')));
+                    echo chargerCombo($nationalites, 'id', 'libelle', 'idnationalite', 'Choisir une nationalité','','',(isset($leget['idnationalite'])&&$leget['idnationalite']!=0)?$leget['idnationalite']:(($lapersonne != null) ? $lapersonne->idnationalite : old('idnationalite')));
                     @endphp
                 </div>    
                 <div class="col-md-2 mb-2">
                     <label class="lelabel" for="">Sexe (*)</label>
                     @php              
-                    echo chargerCombo($sexes, 'id', 'libelle', 'idsexe', 'Choisir le sexe','',"",(isset($leget['idsexe'])&&$leget['idsexe']!=0)?$leget['idsexe']:(($p != null) ? $p->idsexe : old('idsexe')));
+                    echo chargerCombo($sexes, 'id', 'libelle', 'idsexe', 'Choisir le sexe','',"",(isset($leget['idsexe'])&&$leget['idsexe']!=0)?$leget['idsexe']:(($lapersonne != null) ? $lapersonne->idsexe : old('idsexe')));
                     @endphp
                 </div>    
                 <div class="col-md-2 mb-2">
                     <label class=" lelabel" for="">Contact parent (*)</label>
                     <input type="text" class="form-control rounded-4 @error('contactparent') is-invalid @enderror"
                            placeholder="Entrez le contact parent" onKeyup="typetelephone(this);" id="contactparent" name="contactparent"
-                           value="{{(isset($leget['contactparent'])&&$leget['contactparent']!=null)?$leget['contactparent']:(($p != null) ? $p->contactparent : old('contactparent'))}}">
+                           value="{{(isset($leget['contactparent'])&&$leget['contactparent']!=null)?$leget['contactparent']:(($lapersonne != null) ? $lapersonne->contactparent : old('contactparent'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Nom (*)</label>
                     <input type="text" class="form-control rounded-4 @error('nom') is-invalid @enderror"
                            placeholder="Entrez le nom" onKeyup="enMajuscule('nom');" id="nom" name="nom"
-                           value="{{(isset($leget['nom'])&&$leget['nom']!=null)?$leget['nom']:(($p != null) ? $p->nom : old('nom'))}}">
+                           value="{{(isset($leget['nom'])&&$leget['nom']!=null)?$leget['nom']:(($lapersonne != null) ? $lapersonne->nom : old('nom'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Prénoms (*)</label>
                     <input type="text" class="form-control rounded-4 @error('prenoms') is-invalid @enderror"
                            placeholder="Entrez le prénom" onKeyup="enMajuscule('prenoms', 1);" id="prenoms" name="prenoms"
-                           value="{{(isset($leget['prenoms'])&&$leget['prenoms']!=null)?$leget['prenoms']:(($p != null) ? $p->prenoms : old('prenoms'))}}">
+                           value="{{(isset($leget['prenoms'])&&$leget['prenoms']!=null)?$leget['prenoms']:(($lapersonne != null) ? $lapersonne->prenoms : old('prenoms'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Date de naissance (*)</label>
                     <input type="date" class="form-control rounded-4 @error('datenais') is-invalid @enderror"
                            placeholder="Entrez la date de naissance"  id="datenais" name="datenais"
-                           value="{{(isset($leget['datenais'])&&$leget['datenais']!=null)?$leget['datenais']:(($p != null) ? $p->datenais: old('datenais'))}}">
+                           value="{{(isset($leget['datenais'])&&$leget['datenais']!=null)?$leget['datenais']:(($lapersonne != null) ? $lapersonne->datenais: old('datenais'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
                     <label class=" lelabel" for="">Lieu de naissance (*)</label>
                     <input type="text" class="form-control rounded-4 @error('lieunais') is-invalid @enderror"
                            placeholder="Entrez le lieu de naissance"  onKeyup="enMajuscule('lieunais', 0);"  id="lieunais" name="lieunais"
-                           value="{{(isset($leget['lieunais'])&&$leget['lieunais']!=null)?$leget['lieunais']:(($p != null) ? $p->lieunais: old('lieunais'))}}">
+                           value="{{(isset($leget['lieunais'])&&$leget['lieunais']!=null)?$leget['lieunais']:(($lapersonne != null) ? $lapersonne->lieunais: old('lieunais'))}}">
                 </div>
 
                 <div class="col-md-4 mb-2">
@@ -163,7 +163,7 @@ $ins = collect( DB::select($rek))->first();
                                     <?php } else { ?>
                                         <span class="btn btn-file btn-small btn-success" title="Choisir"><span class="fileupload-new"><i class="bi bi-camera"></i></span> 
                                         <?php } ?>
-                                        <span class="fileupload-exists btn-small btn-warning" title="Changer"><i class="bi bi-camera"></i></span><input type="file" name="photo" id="photo" value="{{(isset($leget['photo'])&&$leget['photo']!=null)?$leget['photo']:(($a != null) ? $a->photo : old('photo'))}}" /></span>
+                                        <span class="fileupload-exists btn-small btn-warning" title="Changer"><i class="bi bi-camera"></i></span><input type="file" name="photo" id="photo" value="{{(isset($leget['photo'])&&$leget['photo']!=null)?$leget['photo']:(($lapersonne != null) ? $lapersonne->photo : old('photo'))}}" /></span>
                                     <span class="btn btn-small btn-danger " data-dismiss="fileupload" title="Supprimer"> <i class="bi bi-trash"></i></span> 
                             </div>
                         </div>
