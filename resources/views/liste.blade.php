@@ -222,8 +222,8 @@ break;
 case 'mvtfinancier':
 $lecas = "Liste des cotisations des apprenants";
 $lienAjout = "/ajout-mvtfinancier";
-$coltitre .= "Apprenant|Total cotatisation|Motif";
-$coldata .= "libapprenant|totalmontant|libmotif";
+$coltitre .= "Apprenant|Motif|Total cotatisé|Total retiré|Solde";
+$coldata .= "libapprenant|libmotif|totE|totS|solde";
 $tires = explode('|',$coltitre);
 $cols = explode('|',$coldata);
 $lienModif = "modifier-mvtfinancier/";
@@ -378,12 +378,13 @@ $coldata =  "num|".$coldata;
                     <th>Universitaire</th>
                     @endif
 
-                    <th style="width: 120px;">Détails</th>
+                    <th style="width: 130px;">Détails</th>
                 </tr>
             </thead>
             <tbody>
                 @php
                 $j = 0;
+                //dd($donnees);
                 @endphp
                 @foreach ($donnees as $i => $d)
                 @php
@@ -471,12 +472,25 @@ $coldata =  "num|".$coldata;
                             @if ($config == 'mvtfinancier')
 
                                 <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalPaiement{{ $i }}" title=" Détails cotisation "> <i class="bi bi-boxes"></i>  </a>
+                                data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i class="bi bi-card-list"></i>  </a>
 
                                 <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalPaiement{{ $i }}" title=" Retrait"> <i class="bi bi-boxes"></i>  </a>
+                                data-target="#modalRetraitCotisation{{ $i }}" title=" Retrait"> <i class="bi bi-amd"></i>  </a>
                             
-                            @endif
+                                <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalPaiementParCotisation{{ $i }}" title=" Payer scolarité"> <i class="bi bi-capslock"></i>  </a>
+                            
+                                <!-- Modal Affectation -->
+                                @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                <!-- Fin Modal Affectation -->
+                                <!-- Modal Affectation -->
+                                @include("includes.modalRetraitCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                <!-- Fin Modal Affectation -->
+                                <!-- Modal Affectation -->
+                                @include("includes.modalPaiementParCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                <!-- Fin Modal Affectation -->
+
+                                @endif
 
                             @if ($config == 'apprenant')
                             @php
@@ -493,9 +507,11 @@ $coldata =  "num|".$coldata;
                                title="Les paiements de l'apprenant "> <i class="bi bi-diagram-3-fill"></i>  </a>
                            
                            <a class="flex items-center mr-3" href="#" data-toggle="modal"
-                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> <img
-                                    src="{{asset('assets/img/iconbutton/cotisation1.jpeg')}}"
-                                    style="width: 24px;  height: 24px;"  /> </a>
+                               data-target="#modalPaiementScolarite{{ $i }}"  title="Paiment scolarité"> <i class="bi bi-box-seam-fill"></i> </a>
+
+                           <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> 💰</a>
+                     
                                @endif
 
 
@@ -510,6 +526,9 @@ $coldata =  "num|".$coldata;
                     <!-- Modal Paiement apprenant-->
                     @include('includes.modalPaiementApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])
                     <!-- Fin Paiement apprenant -->
+                    <!-- Modal Paiement apprenant-->
+                    @include('includes.modalPaiement', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])
+                    <!-- Fin Paiement apprenant -->
                     <!-- Modal Cotisation apprenant-->
                     @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])                     <!-- Fin Cotisation apprenant -->
                     @endif
@@ -517,10 +536,8 @@ $coldata =  "num|".$coldata;
                     <!-- Modal Affectation -->
                     @include("includes.modalAffectation", ['libenseignant' => $d->libpersonne, 'idenseignant' => $d->id])
                     <!-- Fin Modal Affectation -->
-
-
-
                     @endif
+                  
 
 
                 </tr>
@@ -619,24 +636,6 @@ $coldata =  "num|".$coldata;
 
     }
 
-    function validerCotisationModale(i) {
-        let  chps = 'datemvt' + i + '|montant' + i ;
-        let labels = "la date de cotisation|le montant payé";
-        let act = '/enregistrer-mvtfinancier';
-        if (controleVide(chps, labels)) {
-        //  alert(act); 
-        const newInput = document.createElement('input');
-        newInput.type = 'hidden';
-        newInput.name = 'num';
-        newInput.id = 'num';
-        newInput.value = i;
-        document.forms["formModalCotisation" + i].append(newInput);
-        document.forms["formModalCotisation" + i].method = 'POST';
-        document.forms["formModalCotisation" + i].action = act;
-        document.forms["formModalCotisation" + i].submit();
-        }
-
-    }
 
     function supprAffectation(id) {
     var rep = confirm("Voulez vous vraiment supprimer cet enregistrement?", okLabel = "oui");

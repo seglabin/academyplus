@@ -49,6 +49,45 @@
 
 <script>
 
+    
+    function validerCotisationModale(i) {
+        let  chps = 'datemvt' + i + '|montant' + i ;
+        let labels = "la date de cotisation|le montant payé";
+        let act = '/enregistrer-mvtfinancier';
+        if (controleVide(chps, labels)) {
+        //  alert(act); 
+        const newInput = document.createElement('input');
+        newInput.type = 'hidden';
+        newInput.name = 'num';
+        newInput.id = 'num';
+        newInput.value = i;
+        document.forms["formModalCotisation" + i].append(newInput);
+        document.forms["formModalCotisation" + i].method = 'POST';
+        document.forms["formModalCotisation" + i].action = act;
+        document.forms["formModalCotisation" + i].submit();
+        }
+    }
+
+    
+    function validerPaiementParCotisation(i) {
+        let  chps = 'datemvt' + i + '|montantPC' + i ;
+        let labels = "la date paiement|le montant payé";
+        let act = '/enregistrer-payer-par-cotisation';
+        if (controleVide(chps, labels)) {
+        //  alert(act); 
+        const newInput = document.createElement('input');
+        newInput.type = 'hidden';
+        newInput.name = 'num';
+        newInput.id = 'num';
+        newInput.value = i;
+        document.forms["formModalPaiementParCotisation" + i].append(newInput);
+        document.forms["formModalPaiementParCotisation" + i].method = 'POST';
+        document.forms["formModalPaiementParCotisation" + i].action = act;
+        document.forms["formModalPaiementParCotisation" + i].submit();
+        }
+    }
+
+    
     function imprimer(module) {
         // alert(module);
         $.ajax({

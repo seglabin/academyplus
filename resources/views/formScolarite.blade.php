@@ -208,7 +208,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
 
         @case('ajout-paiement')
         @case('modifier-paiement')
-        <div class="col-md-4 mb-2">
+        <div class="col-md-4 mb-2"> 
             <input type="hidden" id='idabonnement' name='idabonnement' value="{{$idabonnement}}">
             <label class=" lelabel" for="">Abonnement</label>
             <input type="text" disabled class="form-control rounded-4 @error('abonnement') is-invalid @enderror"

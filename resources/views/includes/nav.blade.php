@@ -50,7 +50,7 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
     @endif
       @if(is_array($menusUser) && in_array(6, $menusUser))
       <li><a style="{{ session('config') == 'mvtfinancier' ? 'color:green; font-weight: bold;' : '' }}"
-      href="/mvtfinancier">Cotisation</a></li>
+      href="/mvtfinancier">Cotisations</a></li>
     @endif
     @if(is_array($menusUser) && in_array(7, $menusUser))
       <li><a style="{{ session('config') == 'composition' ? 'color:green; font-weight: bold;' : '' }}"

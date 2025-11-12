@@ -24,7 +24,7 @@
                     <div class="col-md-1">
                         @if($img != null)
                             <!-- <img src="assets/img/logo.webp" alt="KK"> -->
-                            <img class="imgAbonne" src="../../storage/images/{{ $img }}" alt="KK">
+                            <img class="imgAbonne" src="{{ asset('storage/images/abonnements/'. $img )}} " alt="KK">
                         @else
 
                         @endif

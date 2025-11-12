@@ -76,6 +76,18 @@
                             <a class="flex items-center mr-3" href="/details-composition/{{ $d->id}}" title="Détails "> <i
                                     class="bi bi-eye"></i> </a>
                         @endif
+                        @if ($module == 'listeApprenant') 
+                        <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> 💰 </a>                            
+                          
+                                <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i class="bi bi-boxes"></i>  </a>
+
+                                <!-- Modal Affectation -->
+                                @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id])
+                                <!-- Fin Modal Affectation -->
+                               @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription]) 
+                               @endif
                         @if(is_array($menusUser) && (in_array(2, $menusUser) || in_array(30, $menusUser)))
                             <a class="flex items-center text-danger" href="#"
                                 onclick="supprimer('{{$d->id}}','{{ $module}}','{{ $lienSuppr}}');" title="Suprimer "> <img
@@ -97,11 +109,5 @@
     session(['coldata' => $coldata]);
 @endphp
 <script>
-    // function modifier(id, module) { //alert(id);
-    //     $('#idenreg').val(id);
-    //     $('#module').val(module);
-    //     document.forms["myform"].method = 'GET';
-    //     document.forms["myform"].action = '/classeAbonne';
-    //     document.forms["myform"].submit();
-    // }
+    
 </script>

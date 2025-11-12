@@ -7,6 +7,7 @@ use App\Models\classetype;
 use App\Models\classannesco;
 use App\Models\niveau;
 use App\Models\secteur;
+use Illuminate\Support\Facades\DB;
 
 class ClassetypeController extends Controller
 {
@@ -53,20 +54,23 @@ class ClassetypeController extends Controller
     public function enregistrer(Request $request)
     { //dd($request);
         try {
-
+            $rekdoub = " SELECT * FROM classetypes WHERE  (sigle='" . $request->sigle . "' OR libelle='" . $request->libelle . "' )";
             $id = $request->input('idenreg');
+
             if ($id == 0 || $id == null) {
-                $doub = classetype::where('sigle', $request->sigle)
-                    ->orWhere('libelle', $request->libelle) ->get();
+                // $doub = classetype::where('sigle', $request->sigle)
+                //     ->orWhere('libelle', $request->libelle) ->get();
                 $e = new classetype();
             } else {
-                $doub = Classetype::where('sigle', $request->sigle)
-                    ->orWhere('libelle', $request->libelle)
-                    ->where('id', '!=', $id)
-                    ->get();
+                // $doub = Classetype::where('sigle', $request->sigle)
+                //     ->orWhere('libelle', $request->libelle)
+                //     ->where('id', '!=', $id)
+                //     ->get();
+                $rekdoub .= " AND id!= '" . $id."' "; 
                 $e = classetype::findOrFail($id);
             }
-            //dd($doub);
+            $doub = collect(DB::select($rekdoub));
+            dd($doub);
             if (count($doub) == 0) {
                 //`designation`, `contact`, `email`, `adresse`
                 $e->niveau = $request->niveau;

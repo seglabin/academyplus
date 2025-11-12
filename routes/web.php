@@ -136,7 +136,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mvtfinancier', [MvtfinancierController::class, 'index'])->name('mvtfinancier');
     Route::get('/ajout-paiement', [MvtfinancierController::class, 'form']);
     Route::get('/modifier-paiement/{id}', [MvtfinancierController::class, 'formModif']);
-    Route::POST('/enregistrer-mvtfinancier', [MvtfinancierController::class, 'enregistrer']);
+    Route::POST('/enregistrer-mvtfinancier', [MvtfinancierController::class, 'enregistrerPayer']);
+    Route::POST('/enregistrer-payer-par-cotisation', [MvtfinancierController::class, 'enregistrerPayerParCotisation']);
     Route::get('/supprimer-paiement/{id}', [MvtfinancierController::class, 'supprimer']);
 
     // ===========-------------Gestion des utilisateurs----------===========

@@ -249,7 +249,7 @@ function apprenantsParClassannesco($idclassannesco)
 function validerMoyPeriodeParMatiere(Request $request)
 {
 
-//    dd($request);
+    //    dd($request);
     $id = $request->input('idenreg');
     // dd($request->idclassannesco);
     if ($id == 0 || $id == null) {
@@ -259,7 +259,8 @@ function validerMoyPeriodeParMatiere(Request $request)
     }
 
     //libelle	datcomposition	barem	idclassannesco	idmatiere	idetat
-    if(isset($request->libelle)) $e->libelle = $request->libelle;
+    if (isset($request->libelle))
+        $e->libelle = $request->libelle;
     $e->idclassannesco = $request->idclassannesco;
     $e->idmatiere = $request->idmatiere;
     $e->idsession = $request->idsession;
@@ -273,8 +274,8 @@ function validerMoyPeriodeParMatiere(Request $request)
             # code...
             for ($i = 0; $i < $nb; $i++) {
                 # code...
-                
-                $idm = $request->{'id'. $i};
+
+                $idm = $request->{'id' . $i};
                 $m = ($idm == 0 || $idm == null) ? new detailsmoyperiod() : detailsmoyperiod::find($idm);
                 // dd($m);
                 if ($m) {
@@ -289,13 +290,15 @@ function validerMoyPeriodeParMatiere(Request $request)
                         # code...
                         $v = "intero" . $j . '_' . $i;
                         $col = "intero" . $j;
-                       if(isset($request->$v)) $m->$col = $request->$v;
+                        if (isset($request->$v))
+                            $m->$col = $request->$v;
                     }
                     for ($j = 1; $j <= 2; $j++) {
                         # code...
                         $v = "dev" . $j . '_' . $i;
                         $col = "dev" . $j;
-                       if(isset($request->$v)) $m->$col = $request->$v;
+                        if (isset($request->$v))
+                            $m->$col = $request->$v;
                     }
                     $m->save();
                 }
@@ -303,15 +306,29 @@ function validerMoyPeriodeParMatiere(Request $request)
         }
     }
 
-    
-     function rechercheSouchaine($chaine, $souchaine) {
+}
+
+
+    function rechercheSouchaine($chaine, $souchaine)
+    {
         if (strpos($chaine, $souchaine) !== FALSE) {
             return TRUE;
         }
         return FALSE;
     }
 
-
-}
+    function formatDateFrancais($date)
+    {
+        $dateObj = DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        if ($dateObj) {
+            return $dateObj->format('d-m-Y H:i:s');
+        }
+        return '';
+        // $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+        // if ($dateObj) {
+        //     return $dateObj->format('d-m-Y');
+        // }
+        // return '';
+    }
 
 ?>
