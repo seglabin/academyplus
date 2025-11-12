@@ -264,21 +264,21 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                     <label class=" lelabel" for="">Frais de scolarité (*)</label>
                     <input type="text" class="form-control rounded-4 "
                            placeholder="Frais de scolarité" onkeyup="typemontant(this);" id="fraiscolarite" name="fraiscolarite"
-                           value="{{($a != null) ? $a->fraiscolarite : old('fraiscolarite')}}">
+                           value="{{($a != null) ? $a->fraiscolarite : 0}}">
                 </div>
 
                 <div class="col-md-2 mb-2">
                     <label class=" lelabel" for="">Frais d'inscription (*)</label>
                     <input type="text" class="form-control rounded-4 "
                            placeholder="Frais d'inscription" onkeyup="typemontant(this);" id="fraisinscrip" name="fraisinscrip"
-                           value="{{($a != null) ? $a->fraisinscrip : old('fraisinscrip')}}">
+                           value="{{($a != null) ? $a->fraisinscrip : 0}}">
                 </div>
 
                 <div class="col-md-2 mb-2">
                     <label class=" lelabel" for="">Frais de réinscription (*)</label>
                     <input type="text" class="form-control rounded-4 "
                            placeholder="Frais de réinscription" onkeyup="typemontant(this);" id="fraisreinscrit" name="fraisreinscrit"
-                           value="{{($a != null) ? $a->fraisreinscrit : old('fraisreinscrit')}}">
+                           value="{{($a != null) ? $a->fraisreinscrit : 0}}">
                 </div>
                
 
@@ -286,7 +286,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                     <label class=" lelabel" for="">Tranche à l'inscription</label>
                     <input type="text" class="form-control rounded-4 "
                            placeholder="Tranche à l'inscription" onkeyup="typemontant(this);" id="trancheinscrip" name="trancheinscrip"
-                           value="{{($a != null) ? $a->trancheinscrip : old('trancheinscrip')}}">
+                           value="{{($a != null) ? $a->trancheinscrip : 0}}">
                 </div>
 
                 <div class=" col-md-4 mb-2 " >
@@ -295,7 +295,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">1ère Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="1ère Tranche" onkeyup="typemontant(this);" id="tranchecheance1" name="tranchecheance1"
-                                value="{{($a != null) ? $a->tranchecheance1 : old('tranchecheance1')}}">
+                                value="{{($a != null) ? $a->tranchecheance1 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -313,7 +313,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">2ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="2ème Tranche" onkeyup="typemontant(this);" id="tranchecheance2" name="tranchecheance2"
-                                value="{{($a != null) ? $a->tranchecheance2 : old('tranchecheance2')}}">
+                                value="{{($a != null) ? $a->tranchecheance2 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -331,7 +331,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">3ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="3ème Tranche" onkeyup="typemontant(this);" id="tranchecheance3" name="tranchecheance3"
-                                value="{{($a != null) ? $a->tranchecheance3 : old('tranchecheance3')}}">
+                                value="{{($a != null) ? $a->tranchecheance3 :0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -349,7 +349,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">4ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="4ème Tranche" onkeyup="typemontant(this);" id="tranchecheance4" name="tranchecheance4"
-                                value="{{($a != null) ? $a->tranchecheance4 : old('tranchecheance4')}}">
+                                value="{{($a != null) ? $a->tranchecheance4 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -367,7 +367,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">5ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="5ème Tranche" onkeyup="typemontant(this);" id="tranchecheance5" name="tranchecheance5"
-                                value="{{($a != null) ? $a->tranchecheance5 : old('tranchecheance5')}}">
+                                value="{{($a != null) ? $a->tranchecheance5 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -385,7 +385,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">6ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="6ème Tranche" onkeyup="typemontant(this);" id="tranchecheance6" name="tranchecheance6"
-                                value="{{($a != null) ? $a->tranchecheance6 : old('tranchecheance6')}}">
+                                value="{{($a != null) ? $a->tranchecheance6 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
@@ -403,7 +403,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
                             <label class=" lelabel" for="">7ème Tranche</label>
                             <input type="text" class="form-control rounded-4 "
                                 placeholder="7ème Tranche" onkeyup="typemontant(this);" id="tranchecheance7" name="tranchecheance7"
-                                value="{{($a != null) ? $a->tranchecheance7 : old('tranchecheance7')}}">
+                                value="{{($a != null) ? $a->tranchecheance7 : 0}}">
                         </div>
 
                         <div class="col-md-6 mb-2">
