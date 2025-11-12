@@ -69,7 +69,7 @@ class MvtfinancierController extends Controller
 
     public function enregistrer(Request $request)
     {
-        //  dd($request);
+          //dd($request);
 
         try {
             $i = isset($request->num) ? $request->num : '';
