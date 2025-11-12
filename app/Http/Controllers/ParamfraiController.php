@@ -63,10 +63,14 @@ class ParamfraiController extends Controller
         session(['config' => 'paramfrais']);
         $idabonnement = session('idabonnement');
         $idanneescolaire = session('idanneescolaire');
-        $classetypes = classetype::orderBy('niveau')->get();
+        // $classetypes = classetype::orderBy('niveau')->get();
         $abonnements = abonnement::orderBy('designation')->get();
         $labonnement = abonnement::find($idabonnement);
         $lannesco = anneescolaire::find($idanneescolaire);
+        $rekClasse = " SELECT * FROM classetypes  WHERE  id IN ( ";
+        $rekClasse .= " SELECT DISTINCT idclasse FROM classannescos ca WHERE idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "') ";
+        $rekClasse .= " ORDER BY niveau  ";
+        $classetypes = collect(DB::select($rekClasse));
         
         $lenregistrement = ($idenreg != null) ? paramfrai::find($idenreg) : null;
         if ($lenregistrement) {

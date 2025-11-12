@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\DB;
                                     </div>
 
                                     <div class="col-md-4 mb-2">
-                                        <label class=" lelabel" for="">Montant cotisé</label>
+                                        <label class=" lelabel" for="">Montant payé</label>
                                         <input type="text" class="form-control rounded-4 @error('montantP') is-invalid @enderror"
                                                placeholder="Entrez le montant payé" onkeyup="typemontant(this);"  id="montantP{{ $i }}" name="montantP{{ $i }}"
                                                value="">
@@ -52,7 +52,7 @@ use Illuminate\Support\Facades\DB;
                                     <div class="col-md-3"></div>
                                     <div class="col-md-3">
                                         <button type="button" class="btn btn-primary w-20 mr-auto"
-                                                onclick="validerCotisationModale({{ $i }});">Valider</button>
+                                                onclick="validerPaiementModale({{ $i }});">Valider</button>
                                     </div>
                                     <div class="col-md-1">
                                     </div>

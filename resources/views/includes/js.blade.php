@@ -50,6 +50,25 @@
 <script>
 
     
+    function validerPaiementModale(i) {
+        let  chps = 'datepaiement' + i + '|montantP' + i ;
+        let labels = "la date de paiement|le montant payé";
+        let act = '/enregistrer-paiement-modal';
+        if (controleVide(chps, labels)) {
+        //  alert(act); 
+        const newInput = document.createElement('input');
+        newInput.type = 'hidden';
+        newInput.name = 'num';
+        newInput.id = 'num';
+        newInput.value = i;
+        document.forms["formModalPaiement" + i].append(newInput);
+        document.forms["formModalPaiement" + i].method = 'POST';
+        document.forms["formModalPaiement" + i].action = act;
+        document.forms["formModalPaiement" + i].submit();
+        }
+    }
+
+    
     function validerCotisationModale(i) {
         let  chps = 'datemvt' + i + '|montant' + i ;
         let labels = "la date de cotisation|le montant payé";

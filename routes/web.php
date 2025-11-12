@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajout-paiement', [PaiementController::class, 'form']);
     Route::get('/modifier-paiement/{id}', [PaiementController::class, 'formModif']);
     Route::POST('/enregistrer-paiement', [PaiementController::class, 'enregistrer']);
+    Route::POST('/enregistrer-paiement-modal', [PaiementController::class, 'enregistrerModal']);
     Route::get('/supprimer-paiement/{id}', [PaiementController::class, 'supprimer']);
 
     // ===========-------------mvtfinancier----------===========

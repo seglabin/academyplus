@@ -176,6 +176,43 @@ class PaiementController extends Controller
         }
     }
 
+
+    public function enregistrerModal(Request $request)
+    {
+        //dd($request);
+        try {
+            $i = isset($request->num) ? $request->num : '';
+            $datepaiement = $request->input('datepaiement' . $i);
+            $montant = $request->input('montantP' . $i);
+            $deposant = $request->input('deposant' . $i);
+            $idinscription = $request->input('idinscription' . $i);
+            $idmotif = $request->input('idmotif' . $i);
+            $e = new paiement();
+
+            $id = $request->input('idenreg');
+            $doub = array();
+            
+            if (count($doub) == 0) {
+
+                $e->datepaiement = $datepaiement;
+                $e->montant = sansespace($montant);
+                $e->deposant = $deposant;
+                $e->idinscription = $idinscription;
+                $e->idmotif = $idmotif;
+
+                $e->save();//die();
+                return redirect()->back();
+            } else {
+                $info = "Le paiement que vous tentez d'enregistrer existe déjà";
+                $titre = "DOUBLON";
+                return view('alertDoublon', compact('info', 'titre'));
+            }
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement du paiement.' . $e);
+        }
+    }
+
     public function supprimer($id)
     {
         try {
