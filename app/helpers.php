@@ -223,7 +223,7 @@ function matieresParClassannesco($idclassannesco)
 {
     $rekete = " SELECT m.*, coef, rang ";
     $rekete .= " FROM matieres m, coefficients co, classannescos  ca";
-    $rekete .= " WHERE m.id = co.idmatiere AND co.idabonnement = ca.idabonnement AND co.idclasse = ca.idclasse ";
+    $rekete .= " WHERE m.id = co.idmatiere AND co.idclasse = ca.idclasse ";
     $rekete .= " AND ca.id = '" . $idclassannesco . "' ";
     $rekete .= "";
 

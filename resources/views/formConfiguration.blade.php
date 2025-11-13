@@ -186,12 +186,12 @@ $a = ($lenregistrement) ? $lenregistrement : null;
         @php
         $lienchg = $idenreg == null?'ajout-coefficient':''; //
         @endphp
-                <div class="col-md-4 mb-2">
+                {{--<div class="col-md-4 mb-2">
                     <input type="hidden" id='idabonnement' name='idabonnement' value="{{$idabonnement}}">
                     <label class=" lelabel" for="">Abonnement</label>
                     <input type="text" disabled class="form-control rounded-4 @error('abonnement') is-invalid @enderror"
                     value="{{$labonnement->designation }}">
-                </div>
+                </div>--}}
                 
                 <div class="col-md-4 mb-2">
                     <label class="lelabel" for="">Classe (*)</label>
@@ -457,14 +457,14 @@ function changeLocalite() {
     break;
     case 'abonnement':   
                 //alert('Merci');
-                chps = 'idlocalite|idsecteur|designation|contact|identifiant';  
-                labels = "la localité|le secteur|la désignation|le contact|l'identifiant";  
+                chps = 'idlocalite|idsecteur|designation|contact|identifiant|datexpiration';  
+                labels = "la localité|le secteur|la désignation|le contact|l'identifiant|Date d'expiration";  
                 //  chps = '';labels = '';
                 act = '/enregistrer-abonnement';                         
                 break;
     case 'coefficient':
-            chps = 'idabonnement|idclasse|idmatiere';
-    labels = "l'abonnement|la classe type|la matière";
+            chps = 'idclasse|idmatiere';
+    labels = "la classe type|la matière";
     act = '/enregistrer-coefficient';
     break;
     case 'paramfrais':

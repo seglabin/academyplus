@@ -222,7 +222,7 @@ class MoyperiodapprenantsController extends Controller
     public function moyenneperiodeapprenant(Request $request)
     {
         try {
-            //  dd($request);
+            //   dd($request);
 
             $idabonnement = (count($_GET) > 0 && $_GET['idabonnement'] != null) ? $_GET['idabonnement'] : (session('idabonnement') != null ? session('idabonnement') : session('idabonnementEncours'));
             $idclassannesco = (count($_GET) > 0 && $_GET['idclassannesco'] != null) ? $_GET['idclassannesco'] : (session('idclassannesco') != null ? session('idclassannesco') : null);
@@ -273,7 +273,7 @@ class MoyperiodapprenantsController extends Controller
 
             $rekete = " SELECT m.id idmatiere, libelle , coef, rang " . $moyintero . $dev1 . $dev2 . $moy . $moycoef . $id;
             $rekete .= " FROM matieres m, coefficients co, classannescos  ca";
-            $rekete .= " WHERE m.id = co.idmatiere AND co.idabonnement = ca.idabonnement AND co.idclasse = ca.idclasse ";
+            $rekete .= " WHERE m.id = co.idmatiere AND co.idclasse = ca.idclasse ";
             $rekete .= " AND ca.id = '" . $idclassannesco . "' ";
             $rekete .= "";
 
@@ -305,7 +305,7 @@ class MoyperiodapprenantsController extends Controller
                 'iddetailsmoyenne',
             ));
         } catch (\Exception $e) {
-            // dd($e);
+            dd($e);
             return redirect()->route('moyenneperiodeapprenant')->with('error', 'Une erreur est survenue lors du chargement de la page.');
         }
     }

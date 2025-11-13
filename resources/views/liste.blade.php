@@ -261,6 +261,7 @@ $coldata =  "num|".$coldata;
     <div class="panel-body">
         @if (in_array($config,array('apprenant','paiement','coefficient','classannesco','paramfrais','evaluation')))
         <div class="row">
+            @if (!(in_array($config,array('coefficient'))))
             <div class="col-md-4 mb-2">
                 <label class="lelabel" for="">Abonnements</label>
                 @php    
@@ -275,7 +276,7 @@ $coldata =  "num|".$coldata;
                 }        
                 @endphp
             </div>
-            @if (!(in_array($config,array('coefficient'))))
+            
             <div class="col-md-3 mb-2">
                 <label class="lelabel" for="">Année scolaire </label>
                 @php              

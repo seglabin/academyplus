@@ -15,14 +15,13 @@ class CoefficientController extends Controller
     {
         // dd($request);
         try {
-            $idabonnement = ($request->idabonnement) ? $request->idabonnement : (session('idabonnement') != null ? session('idabonnement') : session('idabonnementEncours'));
-            session(['idabonnement' => $idabonnement]);
-            $abonnements = abonnement::orderBy('designation')->get();
+            // $idabonnement = ($request->idabonnement) ? $request->idabonnement : (session('idabonnement') != null ? session('idabonnement') : session('idabonnementEncours'));
+            // session(['idabonnement' => $idabonnement]);
+            // $abonnements = abonnement::orderBy('designation')->get();
             $typemat = ", COALESCE((SELECT libelle FROM elements e WHERE co.idtypematiere = e.id ),'') libtypematiere ";
             $rekete = " SELECT co.*,c.libelle libclas, m.libelle libmatiere, niveau ".$typemat;
             $rekete .= " FROM coefficients co , classetypes c, matieres m ";
             $rekete .= " WHERE co.idclasse = c.id AND co.idmatiere = m.id ";
-            $rekete .= " AND co.idabonnement = '" . $idabonnement . "' ";
             $rekete .= " ORDER BY niveau ASC, rang ASC, libmatiere "; //idtypematiere
 
             $donnees = collect(DB::select($rekete));
@@ -36,8 +35,6 @@ class CoefficientController extends Controller
                 'donnees',
                 'matieres',
                 'classes',
-                'abonnements',
-                'idabonnement'
             ));
         } catch (\Exception $e) {
             return redirect()->route('coefficient')->with('error', 'Une erreur est survenue lors du chargement de la page.');
@@ -55,20 +52,39 @@ class CoefficientController extends Controller
     {
         $idenreg = $request['idenreg'];
         session(['config' => 'coefficient']);
-        $idabonnement = session('idabonnement');
         //dd($_GET);
 
         $idclasSel = isset($_GET['idclasse']) ? $_GET['idclasse'] : null;
         session(['idclasSel' => $idclasSel]);
-        $classetypes = classetypeParAbonne($idabonnement);
-        $rekmat = " SELECT * FROM matieres WHERE id NOT IN (SELECT DISTINCT idmatiere FROM coefficients WHERE idclasse = '" . $idclasSel . "' )";
+        $reksect ="SELECT secteur FROM classetypes  WHERE id = '".$idclasSel."' ";
+       $tsect = collect(DB::select($reksect))->first();
+       $sect = $tsect ? $tsect->secteur : null;
+    //    dd($idclasSel,$reksect,$tsect,$sect);
+        $classetypes = classetype::orderBy('niveau')->get();
+        $rekmat = " SELECT * FROM matieres m WHERE id NOT IN (SELECT DISTINCT idmatiere FROM coefficients WHERE idclasse = '" . $idclasSel . "' )";
+       switch ($sect) {
+           case 'M':
+               $rekmat .= " AND maternel = 1  ";
+               break;
+           case 'P':
+               $rekmat .= " AND primaire = 1  ";
+               break;
+           case 'S':
+               $rekmat .= " AND secondaire= 1  ";
+               break;
+           case 'U':
+               $rekmat .= " AND universitaire = 1  ";
+               break;
+           default:
+               // no action
+               break;
+       }
+
         $rekmat .= "ORDER BY libelle ";
+        
         $matieres = collect(DB::select($rekmat));
 
-        // $matieres = matiere::orderBy('libelle')->get();
-        $abonnements = abonnement::orderBy('designation')->get();
-        $labonnement = abonnement::find($idabonnement);
-
+     
         $typematieres = elementParTable('typematiere');
 
         $lenregistrement = ($idenreg != null) ? coefficient::find($idenreg) : null;
@@ -79,9 +95,6 @@ class CoefficientController extends Controller
             'lenregistrement',
             'idenreg',
             'classetypes',
-            'abonnements',
-            'idabonnement',
-            'labonnement',
             'typematieres',
             'matieres'
         ));
@@ -94,13 +107,11 @@ class CoefficientController extends Controller
         try {
             $id = $request->input('idenreg');
             if ($id == 0 || $id == null) {
-                $doub = coefficient::where('idabonnement', $request->idabonnement)
-                    ->where('idclasse', $request->idclasse)
+                $doub = coefficient::where('idclasse', $request->idclasse)
                     ->where('idmatiere', $request->idmatiere)->get();
                 $e = new coefficient();
             } else {
-                $doub = coefficient::where('idabonnement', $request->idabonnement)
-                    ->where('idclasse', $request->idclasse)
+                $doub = coefficient::where('idclasse', $request->idclasse)
                     ->where('idmatiere', $request->idmatiere)
                     ->where('id', '!=', $id)
                     ->get();
@@ -109,7 +120,6 @@ class CoefficientController extends Controller
             //  dd(count($doub));
             if (count($doub) == 0) {
                 //`idabonnement`, coef	rang	idclasse	idmatiere	
-                $e->idabonnement = $request->idabonnement;
                 $e->idclasse = $request->idclasse;
                 $e->idmatiere = $request->idmatiere;
                 $e->coef = $request->coef;

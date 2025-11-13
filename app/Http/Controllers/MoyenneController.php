@@ -8,8 +8,20 @@ use App\Models\detailsmoyenne;
 
 class MoyenneController extends Controller
 {
+    public function index(Request $request)
+    {
 
+        try {
+            $info = "La page que vous tentez d'accéder n'est pas encore disponible.";
+            $titre = "NON DISPONIBLE";
+            return view('alertDoublon', compact('info', 'titre'));
 
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement de la classe année scolaire.' . $e);
+
+        }
+    }
     public function validerMoyPeriodeApprenant(Request $request)
     {
 
@@ -69,7 +81,7 @@ class MoyenneController extends Controller
                         // $v = "idmatiere" . $i;
                         $rek .= " AND idmatiere = '" . $request->{'idmatiere' . $i} . "' AND idclassannesco = '" . $request->idclassannesco . "' ";
                         $moyp = infoParRekete($rek);
-                        
+
                         $rq['idenreg'] = $moyp != null ? $moyp->id : null;
                         $rq['libelle'] = $moyp != null ? $moyp->libelle : null;
                         $rq['idclassannesco'] = $request->idclassannesco;
