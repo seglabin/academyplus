@@ -40,7 +40,7 @@ class CompositionController extends Controller
             $classannescos = collect(DB::select($rekclas));
 
             $reksession = " SELECT sa.*  FROM sessionacademiques sa,secteurs s, classetypes c,classannescos ca ";
-            $reksession .= " WHERE s.id = Sa.idsecteur AND c.secteur =  s.sigle ";
+            $reksession .= " WHERE s.id = sa.idsecteur AND c.secteur =  s.sigle ";
             $reksession .= " AND c.id = ca.idclasse  AND ca.id = '" . $idclassannesco . "' ";
             $reksession .= " ORDER BY libelle ";
             $sessionacad = collect(DB::select($reksession));
