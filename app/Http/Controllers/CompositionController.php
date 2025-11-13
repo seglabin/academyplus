@@ -71,6 +71,7 @@ class CompositionController extends Controller
                 'sessionacad',
             ));
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('composition')->with('error', 'Une erreur est survenue lors du chargement de la page.');
         }
     }
