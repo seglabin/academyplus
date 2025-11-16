@@ -29,6 +29,10 @@
             margin: -90px 0 0 -50px;
 
         }
+        .pagea {
+            margin: -90px 0 0 -50px;
+
+        }
     </style>
 </head>
 
