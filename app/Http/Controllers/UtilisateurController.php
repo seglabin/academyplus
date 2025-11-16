@@ -26,7 +26,7 @@ class UtilisateurController extends Controller
             $rekclas .= " ORDER BY libclasse ";
             $classannescos = collect(DB::select($rekclas));
             $rekmat = "SELECT m.*, coef, rang FROM matieres m, coefficients c ";
-            $rekmat .= " WHERE m.id = c.idmatiere AND idabonnement = '" . $idabonnement . "' ";
+            $rekmat .= " WHERE m.id = c.idmatiere  ";
             // $rekmat .= " AND  idclasse = '" . $laclassannesco->idclasse . "' ";
             $rekmat .= " ORDER BY rang ";
 
@@ -53,6 +53,7 @@ class UtilisateurController extends Controller
                 'matieres'
             ));
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('utilisateur')->with('error', 'Une erreur est survenue lors du chargement de la page.');
         }
     }

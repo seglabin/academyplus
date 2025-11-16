@@ -50,6 +50,11 @@ Route::get('/decouvrir', function () {
     return view('public.presentation');
 })->name('decouvrir');
 
+Route::get('/decouverte', function () {
+    // session(['config' => '']);
+    return view('decouverte');
+})->name('decouverte');
+
 // Route::get('/classes', function () {
 //     // session(['config' => '']);
 //     return view('Abonnes.listeClasse');

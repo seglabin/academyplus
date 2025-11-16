@@ -130,7 +130,7 @@ class ClassannescoController extends Controller
                         //  dd($rekete);
 
                         $rekmat = "SELECT m.*, coef, rang FROM matieres m, coefficients c ";
-                        $rekmat .= " WHERE m.id = c.idmatiere AND idabonnement = '" . $idabonnement . "' ";
+                        $rekmat .= " WHERE m.id = c.idmatiere  ";
                         $rekmat .= " AND  idclasse = '" . $laclassannesco->idclasse . "' ";
                         $rekmat .= " ORDER BY rang ";
                         $matieres = collect(DB::select($rekmat));
