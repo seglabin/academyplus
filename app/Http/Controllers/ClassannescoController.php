@@ -48,6 +48,107 @@ class ClassannescoController extends Controller
             return redirect()->route('classannesco')->with('error', 'Une erreur est survenue lors du chargement de la page.');
         }
     }
+    public function educmaster(Request $request)
+    {
+        //    dd(count($_GET));
+        try {
+
+            $idabonnement = (count($_GET) > 0 && $_GET['idabonnement'] != null) ? $_GET['idabonnement'] : (session('idabonnement') != null ? session('idabonnement') : session('idabonnementEncours'));
+            $idclassannesco = (count($_GET) > 0 && $_GET['idclassannesco'] != null) ? $_GET['idclassannesco'] : (session('idclassannesco') != null ? session('idclassannesco') : null);
+            $idanneescolaire = (count($_GET) > 0 && $_GET['idanneescolaire'] != null) ? $_GET['idanneescolaire'] : (session('idanneescolaire') != null ? session('idanneescolaire') : session('idanEncours'));
+
+            session(['idanneescolaire' => $idanneescolaire]);
+            session(['idabonnement' => $idabonnement]);
+            session(['idclassannesco' => $idclassannesco]);
+            $abonnements = abonnement::orderBy('designation')->get();
+
+            $rekan = " SELECT a.*, CONCAT(andebut,' - ',(andebut+1)) AS libannee FROM anneescolaires a ORDER BY andebut ";
+            $annescolaires = collect(DB::select($rekan));
+
+            $rekclas = " SELECT ca.*,libelle, sigle, CONCAT(libelle,' ',COALESCE(groupe, '')) AS libclasse  FROM classannescos ca,classetypes c";
+            $rekclas .= " WHERE c.id = ca.idclasse ";
+            $rekclas .= " AND idabonnement = '" . $idabonnement . "' AND idanneescolaire = '" . $idanneescolaire . "' ";
+            $rekclas .= " ORDER BY libclasse ";
+            // dd($rekclas);
+            $classannescos = collect(DB::select($rekclas));
+
+            $sexe = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = pe.idsexe),'') sexe ";
+            $nationalite = ", COALESCE((SELECT libelle FROM elements e  WHERE e.id = pe.idnationalite),'') nationalite ";
+            $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
+            $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
+            $totscolarite = " COALESCE((SELECT fraiscolarite FROM paramfrais p, classetypes c, classannescos ca, inscriptions ins WHERE c.id = p.idclassetype AND p.idannesco = '" . $idanneescolaire . "' AND p.idabonnement = '" . $idabonnement . "' LIMIT 1 ),'0')  ";
+            $totpaie = " COALESCE((SELECT SUM(montant) FROM paiements p, inscriptions ins WHERE ins.id = p.idinscription AND ins.idapprenant= a.id GROUP BY idinscription ORDER BY ins.id ),'0')  ";
+            $idinscription = ", COALESCE((SELECT ins.id FROM inscriptions ins WHERE  ins.idapprenant= a.id ORDER BY ins.id  LIMIT 1),'') idinscription ";
+           
+           
+
+            // matricule|nom|prenoms|sexe|datenais|lieunais|nationalite|contactparent|optionEPS
+            $rekete = " SELECT a.*, npi, nom, prenoms, contactparent , CONCAT(nom, ' ', prenoms) libapprenant, optionEPS, photo  " . $idinscription . $sexe . $nationalite;
+           if(session('config') == 'note-educmaster'){
+            $interro = ", COALESCE((SELECT moyinterro FROM detailsmoyperiods d, moyperiodapprenants m , inscriptions ins WHERE d.idmoyperiod = m.id AND ins.id = d.idinscription AND ins.idapprenant= a.id ),'-1') moyinterro ";
+            $dev1 = ", COALESCE((SELECT dev1 FROM detailsmoyperiods d, moyperiodapprenants m , inscriptions ins WHERE d.idmoyperiod = m.id AND ins.id = d.idinscription AND ins.idapprenant= a.id ),'-1') dev1 ";
+            $dev2 = ", COALESCE((SELECT dev2 FROM detailsmoyperiods d, moyperiodapprenants m , inscriptions ins WHERE d.idmoyperiod = m.id AND ins.id = d.idinscription AND ins.idapprenant= a.id ),'-1') dev2 ";
+            $moy = ", COALESCE((SELECT moy FROM detailsmoyperiods d, moyperiodapprenants m , inscriptions ins WHERE d.idmoyperiod = m.id AND ins.id = d.idinscription AND ins.idapprenant= a.id ),'-1') moy ";
+
+            $rekete .= $interro.$dev1.$dev2.$moy;
+           }
+           
+           
+            $rekete .= ", datenais,lieunais ";
+            $rekete .= "FROM apprenants a, personnes pe WHERE a.idpersonne = pe.id ";
+            if ($idclassannesco != null && $idclassannesco != 0) {
+                $rekete .= " AND a.id IN ( SELECT idapprenant FROM inscriptions WHERE idclassannesco = '" . $idclassannesco . "' ) ";
+            } else {
+
+                if ($idabonnement != null && $idanneescolaire != null && $idabonnement != 0 && $idanneescolaire != 0) {
+                    $rekete .= " AND a.id IN ( SELECT idapprenant FROM inscriptions WHERE idclassannesco  IN (SELECT id FROM classannescos WHERE idabonnement= '" . $idabonnement . "' AND idanneescolaire= '" . $idanneescolaire . "' )) ";
+                } else {
+                    $rekete .= " AND (a.id IN ( SELECT idapprenant FROM inscriptions WHERE idclassannesco  IN (SELECT id FROM classannescos WHERE idanneescolaire= '" . $idanneescolaire . "' )) OR idabonnement= '" . $idabonnement . "' ) ";
+                }
+
+            }
+
+            $rekete .= " ORDER BY nom, prenoms ";
+                // dd($rekete);
+            $donnees = collect(DB::select($rekete));
+            if (session('config') == 'note-educmaster') {
+                // foreach ($donnees as $V) {
+                //     # code...
+                //     $s = 0;
+                //     $n = 0;
+                //     if($v->moyinterro >= 0 ){
+                //         $s += $v->moyinterro;
+                //         $n += 1;
+                //     }
+                //     if($v->dev1 >= 0 ){
+                //         $s += $v->dev1;
+                //         $n += 1;
+                //     }
+                //     if($v->dev2 >= 0 ){
+                //         $s += $v->dev1;
+                //         $n += 1;
+                //     }
+                // }
+
+            } else {
+                session(['config' => 'liste-educmaster']);
+            }
+
+
+            return view('liste', compact(
+                'donnees',
+                'abonnements',
+                'annescolaires',
+                'idanneescolaire',
+                'idclassannesco',
+                'idabonnement',
+                'classannescos'
+            ));
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->route('apprenant')->with('error', 'Une erreur est survenue lors du chargement de la page.');
+        }
+    }
 
     public function classeAbonne(Request $request)
     {
@@ -164,7 +265,7 @@ class ClassannescoController extends Controller
                         $clas = ", COALESCE((SELECT CONCAT(c.sigle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') classeactuelle ";
                         $libclas = ", COALESCE((SELECT CONCAT(c.libelle, ' ', COALESCE(groupe, '')) FROM classetypes c, classannescos ca, inscriptions ins WHERE c.id = ca.idclasse AND ins.idclassannesco = ca.id AND ins.idapprenant= a.id ORDER BY ins.id DESC LIMIT 1 ),'') libclasseactuelle ";
 
-                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent,photo, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ' . $sexe. $clas.$libclas;
+                        $rekete = " SELECT a.*, npi, nom, prenoms, contactparent,photo, CONCAT(nom, ' ', prenoms) libapprenant  " . $idinscription . $clas . ',' . $totpaie . ' totpaye,' . $totscolarite . ' totscolarite ,(' . $totscolarite . '-' . $totpaie . ') reste ' . $sexe . $clas . $libclas;
 
                         $rekete .= " FROM apprenants a, inscriptions ins, personnes p ";
                         $rekete .= " WHERE a.id = ins.idapprenant AND p.id = a.idpersonne AND idclassannesco = '" . $idclas . "' ";

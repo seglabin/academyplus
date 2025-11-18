@@ -54,7 +54,7 @@
     <div class="mt-4">
       <a href="/decouvrir" class="btn btn-light btn-custom">Découvrir l’application</a>
       <!-- <a href="start-your-journey.html" class="btn btn-warning btn-custom">Start your journey</a> -->
-      <a href="#" class="btn btn-primary px-4 py-2">Mon Évolution</a>
+      <!-- <a href="#" class="btn btn-primary px-4 py-2">Mon Évolution</a> -->
       <a href="/login" class="btn btn-success px-4 py-2">Me connecter</a>
     </div>
   </header>

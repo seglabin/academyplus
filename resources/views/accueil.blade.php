@@ -53,8 +53,8 @@
                             <h1>Academy Plus</h1>
                             <p>Facilite la gestion de votre votre école</p>
                             <div class="cta-buttons">
-                                <a href="#" class="btn-primary">Start Your Journey</a>
-                                <a href="/decouverte" class="btn-secondary">Découvrir l'application</a>
+                                <!-- <a href="#" class="btn-primary">Start Your Journey</a> -->
+                                <a href="/decouverte" class="btn btn-outline-success">Découvrir l'application</a>
                             </div>
                         </div>
                     </div>

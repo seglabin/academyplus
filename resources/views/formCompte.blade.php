@@ -11,6 +11,9 @@ switch ($config) {
 case 'utilisateur':
 $lecas = ($lenregistrement) ? "Modification d'un utilisateur" : "Ajout d'un utilisateur";
 break;
+case 'personnel':
+$lecas = ($lenregistrement) ? "Modification d'un personnel" : "Ajout d'un personnel";
+break;
 
 }
 
@@ -30,6 +33,7 @@ $idenreg = $a != null? $a->id:'';
     @switch($config) 
 
     @case('utilisateur')
+    @case('personnel')
 <div class="col-md-4 mb-2">
         <label class="lelabel" for="">Infos personnels</label>
       <div class="btn-group btn-group-toggle"  style="width:100%;">
@@ -126,6 +130,7 @@ $idenreg = $a != null? $a->id:'';
     var ok = true;
     switch (cas) {
     case 'utilisateur':
+    case 'personnel':
             // alert('Merci');
             chps = 'idrole|idtypuser';
     labels = "le profil|le type d'utilisateur";

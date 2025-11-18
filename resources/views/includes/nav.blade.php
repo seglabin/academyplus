@@ -1,9 +1,10 @@
 @php
   use Illuminate\Support\Facades\DB;
   $tparam = explode('|', 'role|permission|rolepermission|anneescolaire|circonscolaire|classetype|matiere|motif|nationalite|ddemp|sessionacademique|personne');
-  $tscolarite = explode('|', 'apprenant|composition|evaluation|paiement|moyenne-annuelle|moyenne-periode|moyenne-generale-periode|moyenne-periode-apprenant|mvtfinancier');
+  $tscolarite = explode('|', 'apprenant|composition|evaluation|paiement|moyenne-annuelle|moyenne-periode|moyenne-generale-periode|moyenne-periode-apprenant|mvtfinancier|personnel');
   $tconfig = explode('|', 'abonnement|classannesco|coefficient|paramfrais');
   $tcompte = explode('|', 'utilisateur');
+  $tedition = explode('|', 'note-educmaster|note-educmaster');
 
 
   $stylactive = "style='color:red;'";
@@ -47,6 +48,10 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
       @if(is_array($menusUser) && in_array(6, $menusUser))
       <li><a style="{{ session('config') == 'apprenant' ? 'color:green; font-weight: bold;' : '' }}"
       href="/apprenant">Apprenants</a></li>
+    @endif     
+      @if(is_array($menusUser) && in_array(42, $menusUser))
+      <li><a style="{{ session('config') == 'personnel' ? 'color:green; font-weight: bold;' : '' }}"
+      href="/personnel">Personnel</a></li>
     @endif
       @if(is_array($menusUser) && in_array(6, $menusUser))
       <li><a style="{{ session('config') == 'mvtfinancier' ? 'color:green; font-weight: bold;' : '' }}"
@@ -83,8 +88,7 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
       </ul>
     </li>
   @endif
-    <!-- <li><a href="students-life.html">EVALUATIONS</a></li>
-    <li><a href="news.html">SUBVENTIONS</a></li> -->
+    
     @if(is_array($menusUser) && in_array(10, $menusUser))
     <li class="dropdown"><a class="{{ in_array(session('config'), $tconfig) ? 'active' : '' }}"
       href="#"><span>CONFIGURATION</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -94,7 +98,7 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
       <li><a style="{{ session('config') == 'classannesco' ? 'color:green; font-weight: bold;' : '' }}"
         href="/classannesco">Classes</a></li>
       <li><a style="{{ session('config') == 'coefficient' ? 'color:green; font-weight: bold;' : '' }}"
-        href="/coefficient">Coefficents</a></li>
+        href="/coefficient">Coefficients</a></li>
       <li><a style="{{ session('config') == 'paramfrais' ? 'color:green; font-weight: bold;' : '' }}"
         href="/paramfrais">Paramétrage des frais</a></li>
       <!-- <li><a href="faculty-staff.html">Paiements</a></li> -->
@@ -102,6 +106,26 @@ $classannescosEncours = lesclassesAnnesco($userEncours->id, $userEncours->idrole
       </ul>
     </li>
   @endif
+  
+    
+    {{--@if(is_array($menusUser) && in_array(10, $menusUser))--}}
+    <li class="dropdown"><a class="{{ in_array(session('config'), $tedition) ? 'active' : '' }}"
+      href="#"><span>EDITION</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+      <ul>
+       @if(is_array($menusUser) && in_array(6, $menusUser))
+          <li><a style="{{ session('config') == 'liste-educmaster' ? 'color:green; font-weight: bold;' : '' }}"
+          href="/liste-educmaster">Liste EDUCMASTER</a></li>
+       @endif
+       @if(is_array($menusUser) && in_array(6, $menusUser))
+          <li><a style="{{ session('config') == 'note-educmaster' ? 'color:green; font-weight: bold;' : '' }}"
+          href="/note-educmaster">Note EDUCMASTER</a></li>
+       @endif
+   
+
+      </ul>
+    </li>
+  {{--@endif--}}
+
     @if(is_array($menusUser) && in_array(14, $menusUser))
     <li class="dropdown "><a class="{{ in_array(session('config'), $tparam) ? 'active' : '' }}"
       href="#"><span>Paramètres</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>

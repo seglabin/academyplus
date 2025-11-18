@@ -9,7 +9,7 @@
 
 
     $libmat = ", COALESCE((SELECT libelle FROM matieres m WHERE m.id = a.idmatiere),' ') AS libmatiere ";
-    $rekete = " SELECT a.*, c.libelle, sigle, CONCAT(c.libelle,' ',groupe) AS libclasse  ".$libmat ;
+    $rekete = " SELECT a.*, c.libelle, sigle, CONCAT(c.libelle,' ',COALESCE(groupe, '')) AS libclasse  ".$libmat ;
     $rekete .= " ";
     $rekete .= " FROM affectations a, classannescos ca, classetypes c ";
     $rekete .= " WHERE c.id = ca.idclasse AND a.idclassannesco = ca.id  ";

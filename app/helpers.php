@@ -5,7 +5,6 @@ use App\Models\moyperiodapprenants;
 use App\Models\detailsmoyperiod;
 use Illuminate\Http\Request;
 
-;
 function chargerComboa($donnees, $idtable, $colonne, $idcombo, $choixdefaut = "Choisir...", $largeur = "210", $onchange = "", $idencours = "", $multiple = "", $idtabloRet = "")
 {
     $affich = "";

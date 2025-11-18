@@ -94,6 +94,17 @@ $lienModif = "modifier-utilisateur/";
 $lienSuppr = "supprimer-utilisateur/";
 break;
 
+case 'personnel':
+$lecas = "Liste du personnel";
+$lienAjout = "/ajout-personnel"; //libpersonne  librole  libabonnement    libtype
+$coltitre .= "Login|Infos personnelle|Profil|Type|Abonnement";
+$coldata .= "login|libpersonne|librole|libtype|libabonnement";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
+$lienModif = "modifier-personnel/";
+$lienSuppr = "supprimer-personnel/";
+break;
+
 case 'classetype':
 $lecas = "Liste des classe - types";
 $lienAjout = "/ajout-classetype";
@@ -114,6 +125,28 @@ $tires = explode('|',$coltitre);
 $cols = explode('|',$coldata);
 $lienModif = "modifier-apprenant/";
 $lienSuppr = "supprimer-apprenant/";
+break;
+
+case 'liste-educmaster':
+$lecas = "Liste des apprenants pour EDUCMASTER";
+// $lienAjout = "/ajout-apprenant";
+$coltitre .= "N° EDUCMASTER|Nom|Prénoms|Sexe|Date de naissance|Lieu de naissance|Nationalité|Contact|Option EPS";
+$coldata .= "matricule|nom|prenoms|sexe|datenais|lieunais|nationalite|contactparent|optionEPS";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
+// $lienModif = "modifier-apprenant/";
+// $lienSuppr = "supprimer-apprenant/";
+break;
+
+case 'note-educmaster':
+$lecas = "Liste des notes des apprenants pour EDUCMASTER";
+// $lienAjout = "/ajout-apprenant";
+$coltitre .= "N° EDUCMASTER|Nom|Prénoms|Moy. Inteero|1er Devoir|2è Devoir|Moyenne";
+$coldata .= "matricule|nom|prenoms|moyinterro|dev1|dev2|moy";
+$tires = explode('|',$coltitre);
+$cols = explode('|',$coldata);
+// $lienModif = "modifier-apprenant/";
+// $lienSuppr = "supprimer-apprenant/";
 break;
 
 case 'classannesco':
@@ -378,8 +411,9 @@ $coldata =  "num|".$coldata;
                     <th>Secondaire</th>
                     <th>Universitaire</th>
                     @endif
-
-                    <th style="width: 130px;">Détails</th>
+                    @if(!in_array($config,array('liste-educmaster','note-educmaster')))
+                        <th style="width: 130px;">Détails</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -425,100 +459,105 @@ $coldata =  "num|".$coldata;
                     <td> <input type="checkbox" onclick="return false" {{($d->secondaire == 1)?"checked = true" : ''}}  /> </td>
                     <td> <input type="checkbox" onclick="return false" {{($d->universitaire == 1)?"checked = true" : ''}}  /> </td>
                     @endif
-                   
-                    <td>
-                        <div class="flex justify-center items-center">
-                            @if(is_array($menusUser) && in_array(3, $menusUser))
-                            @if (!in_array($config,array('mvtfinancier')))
-                                <a class="flex items-center mr-3" href="/{{$lienModif . $d->id}}" title="Modifier "><img
-                                        src="{{asset('assets/img/iconbutton/modif.png')}}"
-                                        style="width: 24px;  height: 24px;" /> </a>                            
-                            @endif
-                            @endif
-
-                            @if ($config == 'composition')
-                            <a class="flex items-center mr-3" href="/details-composition/{{ $d->id}}" title="Détails "> <i class="bi bi-eye"></i> </a>
-                            @endif
-                            @if ($config == 'utilisateur')
-                            @if(is_array($menusUser) && in_array(1, $menusUser))
-                            <a class="flex items-center text-danger" href="#" data-toggle="modal"
-                               data-target="#modalAffectation{{ $i }}"
-                               title="Affectation "> <i class="bi bi-diagram-3-fill"></i>  </a>
-                            @endif
-                            @if(is_array($menusUser) && in_array(3, $menusUser))
-                            <a class="flex items-center " href="#" data-toggle="modal"
-                               data-target="#modalReinitPassword"onclick="afficheModalReinit({{$d->id}});"
-                               title="Réinitialiser mot de passe "> <img src="{{asset('assets/img/reinitpwd.png')}}"
-                                                                      alt="Réinitialiser mot de passe" style="width: 24px;  height: 24px;" /> </a>
-                            @endif  
-
-                            @if(is_array($menusUser) && in_array(3, $menusUser))
-                            <a class="flex items-center " href="#" data-toggle="modal"
-                               data-target="#modalChangeLogin"onclick="afficheModalChangeLogin({{$d->id}},'{{$d->login}}');"
-                               title="Modification de login "> <img src="{{asset('assets/img/correction.png')}}"
-                                                                 alt="Modification de login" style="width: 24px;  height: 24px;" /> </a>
-                            @endif  
-
-                            @endif
-
-
-                            @if(is_array($menusUser) && in_array(2, $menusUser))
+                   @if(!in_array($config,array('liste-educmaster','note-educmaster')))
+                        <td>
+                            <div class="flex justify-center items-center">
+                                @if(is_array($menusUser) && in_array(3, $menusUser))
                                 @if (!in_array($config,array('mvtfinancier')))
-                                <a class="flex items-center text-danger" href="#" onclick="supprimer({{$d->id}});"
-                                title="Suprimer "> <img src="{{asset('assets/img/iconbutton/annuler.png')}}"
-                                                        alt="Supprimer" style="width: 24px;  height: 24px;" /> </a>
-                                @endif    
-                            @endif    
+                                    <a class="flex items-center mr-3" href="/{{$lienModif . $d->id}}" title="Modifier "><img
+                                            src="{{asset('assets/img/iconbutton/modif.png')}}"
+                                            style="width: 24px;  height: 24px;" /> </a>                            
+                                @endif
+                                @endif
 
-                            @if ($config == 'mvtfinancier')
+                                @if ($config == 'composition')
+                                <a class="flex items-center mr-3" href="/details-composition/{{ $d->id}}" title="Détails "> <i class="bi bi-eye"></i> </a>
+                                @endif
+                                @if (in_array($config,array('personnel','utilisateur'))) 
+                                @if(is_array($menusUser) && in_array(1, $menusUser))
+                                <a class="flex items-center text-danger" href="#" data-toggle="modal"
+                                data-target="#modalAffectation{{ $i }}"
+                                title="Affectation "> <i class="bi bi-diagram-3-fill"></i>  </a>
+                                @endif
+                                @if(is_array($menusUser) && in_array(3, $menusUser))
+                                <a class="flex items-center " href="#" data-toggle="modal"
+                                data-target="#modalReinitPassword"onclick="afficheModalReinit({{$d->id}});"
+                                title="Réinitialiser mot de passe "> <img src="{{asset('assets/img/reinitpwd.png')}}"
+                                                                        alt="Réinitialiser mot de passe" style="width: 24px;  height: 24px;" /> </a>
+                                @endif  
 
+                                @if(is_array($menusUser) && in_array(3, $menusUser))
                                 <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i class="bi bi-card-list"></i>  </a>
-
-                                <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalRetraitCotisation{{ $i }}" title=" Retrait"> <i class="bi bi-amd"></i>  </a>
-                            
-                                <a class="flex items-center " href="#" data-toggle="modal"
-                                data-target="#modalPaiementParCotisation{{ $i }}" title=" Payer scolarité"> <i class="bi bi-capslock"></i>  </a>
-                            
-                                <!-- Modal Affectation -->
-                                @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
-                                <!-- Fin Modal Affectation -->
-                                <!-- Modal Affectation -->
-                                @include("includes.modalRetraitCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
-                                <!-- Fin Modal Affectation -->
-                                <!-- Modal Affectation -->
-                                @include("includes.modalPaiementParCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
-                                <!-- Fin Modal Affectation -->
+                                data-target="#modalChangeLogin"onclick="afficheModalChangeLogin({{$d->id}},'{{$d->login}}');"
+                                title="Modification de login "> <img src="{{asset('assets/img/correction.png')}}"
+                                                                    alt="Modification de login" style="width: 24px;  height: 24px;" /> </a>
+                                @endif  
 
                                 @endif
 
-                            @if ($config == 'apprenant')
-                            @php
-                             $ln['sexe'] = $d->sexe;
-                             $ln['photo'] = $d->photo;
-                            @endphp
-                            <a class="flex items-center text-danger" href="#" data-toggle="modal"
-                               data-target="#modalInscription{{ $i }}"
-                            title="Inscription "> <img src="{{asset('assets/img/favicon.png')}}"
-                                                       alt="Inscription" style="width: 24px;  height: 24px;" /> </a>
 
-                            <a class="flex items-center text-danger" href="#" data-toggle="modal"
-                               data-target="#modalPaiement{{ $i }}"
-                               title="Les paiements de l'apprenant "> <i class="bi bi-diagram-3-fill"></i>  </a>
-                           
-                           <a class="flex items-center mr-3" href="#" data-toggle="modal"
-                               data-target="#modalPaiementScolarite{{ $i }}"  title="Paiment scolarité"> <i class="bi bi-box-seam-fill"></i> </a>
+                                @if(is_array($menusUser) && in_array(2, $menusUser))
+                                    @if (!in_array($config,array('mvtfinancier')))
+                                    <a class="flex items-center text-danger" href="#" onclick="supprimer({{$d->id}});"
+                                    title="Suprimer "> <img src="{{asset('assets/img/iconbutton/annuler.png')}}"
+                                                            alt="Supprimer" style="width: 24px;  height: 24px;" /> </a>
+                                    @endif    
+                                @endif    
 
-                           <a class="flex items-center mr-3" href="#" data-toggle="modal"
-                               data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> 💰</a>
-                     
-                               @endif
+                                @if ($config == 'mvtfinancier')
+                                @if(is_array($menusUser) && in_array(38, $menusUser))
+                                    <a class="flex items-center " href="#" data-toggle="modal"
+                                    data-target="#modalDetailsCotisation{{ $i }}" title=" Détails cotisation "> <i class="bi bi-card-list"></i>  </a>
+                                    <!-- Modal Affectation -->
+                                    @include("includes.modalDetailsCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                    <!-- Fin Modal Affectation -->
+                                @endif
+                                @if(is_array($menusUser) && in_array(40, $menusUser))
+                                    <a class="flex items-center " href="#" data-toggle="modal"
+                                    data-target="#modalRetraitCotisation{{ $i }}" title=" Retrait"> <i class="bi bi-amd"></i>  </a>
+                                    <!-- Modal Affectation -->
+                                    @include("includes.modalRetraitCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                    <!-- Fin Modal Affectation -->
+                                @endif
+                                @if(is_array($menusUser) && in_array(41, $menusUser))
+                                    <a class="flex items-center " href="#" data-toggle="modal"
+                                    data-target="#modalPaiementParCotisation{{ $i }}" title=" Payer scolarité"> <i class="bi bi-capslock"></i>  </a>
+                                    <!-- Modal Affectation -->
+                                    @include("includes.modalPaiementParCotisation", ['libapprenant' => $d->libapprenant, 'idinscription' => $d->id, 'totE' => $d->totE, 'totS' => $d->totS, 'solde' => $d->solde])
+                                    <!-- Fin Modal Affectation -->
+                                @endif
+
+                                    @endif
+
+                                @if ($config == 'apprenant')
+                                @php
+                                $ln['sexe'] = $d->sexe;
+                                $ln['photo'] = $d->photo;
+                                @endphp
+                                <a class="flex items-center text-danger" href="#" data-toggle="modal"
+                                data-target="#modalInscription{{ $i }}"
+                                title="Inscription "> <img src="{{asset('assets/img/favicon.png')}}"
+                                                        alt="Inscription" style="width: 24px;  height: 24px;" /> </a>
+                            @if(is_array($menusUser) && in_array(39, $menusUser))
+                                <a class="flex items-center text-danger" href="#" data-toggle="modal"
+                                data-target="#modalPaiement{{ $i }}"
+                                title="Les paiements de l'apprenant "> <i class="bi bi-diagram-3-fill"></i>  </a>
+                            @endif       
+                                @if(is_array($menusUser) && in_array(9, $menusUser))
+                                    <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                                        data-target="#modalPaiementScolarite{{ $i }}"  title="Paiment scolarité"> <i class="bi bi-box-seam-fill"></i> </a>
+                                @endif
+                                @if(is_array($menusUser) && in_array(41, $menusUser))
+                            <a class="flex items-center mr-3" href="#" data-toggle="modal"
+                                data-target="#modalCotisationApprenant{{ $i }}"  title="Payer une cotisation "> 💰</a>
+                        
+                                @endif
+                                @endif
 
 
-                        </div>
-                    </td>
-
+                            </div>
+                        </td>
+                    @endif
                     @if ($config=='apprenant')
                     <!-- Modal -->                   
                     <!-- Modal Inscription apprenant-->
@@ -533,7 +572,7 @@ $coldata =  "num|".$coldata;
                     <!-- Modal Cotisation apprenant-->
                     @include('includes.modalCotisationApprenant', ['libapprenant' => $d->libapprenant, 'idinscription' => $d->idinscription])                     <!-- Fin Cotisation apprenant -->
                     @endif
-                    @if ($config=='utilisateur')
+                    @if (in_array($config,array('personnel','utilisateur'))) 
                     <!-- Modal Affectation -->
                     @include("includes.modalAffectation", ['libenseignant' => $d->libpersonne, 'idenseignant' => $d->id])
                     <!-- Fin Modal Affectation -->

@@ -232,13 +232,41 @@
         });
     });
 
-    function appliqudataTable(idtable, optbuton) {
-        var nomtab = "#" + idtable; //alert(optbuton);
-        $(nomtab).DataTable({
-            "responsive": true, "lengthChange": true, "autoWidth": false, "info": true, "ordering": true,
-            "buttons": optbuton//["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo(nomtab + '_wrapper .col-md-6:eq(0)');
-    }
+    // function appliqudataTable(idtable, optbuton) {
+    //     var nomtab = "#" + idtable; //alert(optbuton);
+    //     $(nomtab).DataTable({
+    //         "responsive": true, "lengthChange": true, "autoWidth": false, "info": true, "ordering": true,
+    //         "buttons": optbuton//["copy", "csv", "excel", "pdf", "print", "colvis"]
+    //     }).buttons().container().appendTo(nomtab + '_wrapper .col-md-6:eq(0)');
+    // }
+
+    
+  function appliqueDatatable() {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  }
+
+  function appliqueClassDatatable() {
+    $(".appliqueDT").DataTable({
+      "responsive": true, "lengthChange": true, "autoWidth": true,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('.appliqueDT_wrapper .col-md-6:eq(0)');
+
+  }
+
+  
+
 
     function validateEmail(idemail) {
         var email = $('#' + idemail).val();
@@ -386,12 +414,15 @@
     }
 
 
-    let idtable = "letablo";
-    let optbuton = ["colvis"]; // ["excel", "pdf"];
+    // let idtable = "letablo";
+    // let optbuton = ["colvis"]; // ["excel", "pdf"];
 
 
-    appliqudataTable(idtable, optbuton)
+    // appliqudataTable(idtable, optbuton)
     //appliqueDatatable();
+
+    
+  appliqueClassDatatable();
 
     $('.select2').select2();
 </script>

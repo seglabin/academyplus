@@ -149,8 +149,23 @@ Route::middleware(['auth'])->group(function () {
 
     // ===========-------------Gestion des utilisateurs----------===========
     Route::get('/utilisateur', [UtilisateurController::class, 'index'])->name('utilisateur');
-    Route::get('/ajout-utilisateur', [UtilisateurController::class, 'form']);
-    Route::get('/modifier-utilisateur/{id}', [UtilisateurController::class, 'formModif']);
+    Route::get('/personnel', function () {
+        session(['config' => 'personnel']);
+        return redirect()->route('utilisateur');
+    });
+
+    Route::get('/ajout-personnel', function () {
+        session(['config' => 'personnel']);
+        return redirect()->route('ajoutUtilisateur');
+    });
+    // Route::get('/modifier-personnel/{id}', function () {
+    //     session(['config' => 'personnel']);
+    //     return redirect()->route('modifierUtilisateur',compact('{id}'));
+    // });
+    
+    Route::get('/modifier-personnel/{id}', [UtilisateurController::class, 'modifPersonnel']);
+    Route::get('/ajout-utilisateur', [UtilisateurController::class, 'form'])->name('ajoutUtilisateur');
+    Route::get('/modifier-utilisateur/{id}', [UtilisateurController::class, 'formModif'])->name('modifierUtilisateur');
     Route::POST('/changer-mon-password', [UtilisateurController::class, 'changerPassword']);
     Route::POST('/changer-login', [UtilisateurController::class, 'changerLogin']);
     Route::POST('/reinitialiser-password', [UtilisateurController::class, 'reinitialiserPassword']);
@@ -194,6 +209,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/supprimer-paramfrais/{id}', [ParamfraiController::class, 'supprimer']);
 
     // ===========-------------Classe année scolaire----------===========
+    Route::get('/educmaster', [ClassannescoController::class, 'educmaster'])->name('educmaster');
+    // Route::get('/liste-educmaster', function () {
+    //     [ClassannescoController::class, 'educmaster'] })->name('educmaster');
+   Route::get('/liste-educmaster', function () {
+        session(['config' => 'liste-educmaster']);
+        return redirect()->route('educmaster');
+    });
+   Route::get('/note-educmaster', function () {
+        session(['config' => 'note-educmaster']);
+        return redirect()->route('educmaster');
+    });
     Route::get('/classeAbonne', [ClassannescoController::class, 'classeAbonne'])->name('classeAbonne');
     Route::get('/classannesco', [ClassannescoController::class, 'index'])->name('classannesco');
     Route::get('/ajout-classannesco', [ClassannescoController::class, 'form']);

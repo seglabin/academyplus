@@ -427,7 +427,7 @@ $a = ($lenregistrement) ? $lenregistrement : null;
         <div class="col-md-4"></div>
         <div class="col-md-2">
             <button type="button" class="btn btn-outline-info w-20 mr-auto btnarrondi "
-                    onclick="valider('{{ $config }}');">Enregistrerss</button>
+                    onclick="valider('{{ $config }}');">Enregistrer</button>
         </div>
         <div class="col-md-6"></div>
 

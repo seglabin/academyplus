@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\DB;
 class UtilisateurController extends Controller
 {
     public function index(Request $request)
-    {   //dd($request);
+    {
+        // dd($request);
         try {
             $u = Auth::user();
             $idanSel = (isset($_GET['idanSel']) > 0 && $_GET['idanSel'] != null) ? $_GET['idanSel'] : (session('idanEncours') != null ? session('idanEncours') : null);
@@ -41,12 +42,18 @@ class UtilisateurController extends Controller
             $rekete .= " WHERE u.idrole = r.id ";
             if ($u->idrole != 3)
                 $rekete .= " AND idabonnement = '" . $u->idabonnement . "' ";
+
+            if (session('config') == 'personnel') {
+
+            } else {
+                session(['config' => 'utilisateur']);
+            }
+
             $rekete .= " ORDER BY libpersonne ";
             //  dd($rekete);
             $donnees = collect(DB::select($rekete));
             // $donnees = User::get(); 
 
-            session(['config' => 'utilisateur']);
             return view('liste', compact(
                 'donnees',
                 'classannescos',
@@ -59,6 +66,17 @@ class UtilisateurController extends Controller
     }
 
 
+    // public function personnel(Request $request)
+    // { //dd($request);
+    //    $request['config'] = '';
+    //     return $this->form($request);
+    // }
+    public function modifPersonnel(Request $request, $id)
+    { //dd($request);
+        $request['idenreg'] = $id;
+        return $this->form($request);
+    }
+
     public function formModif(Request $request, $id)
     { //dd($request);
         $request['idenreg'] = $id;
@@ -67,11 +85,14 @@ class UtilisateurController extends Controller
 
     public function form(Request $request)
     {
-
+        // dd($request);
         $idenreg = $request['idenreg'];
+        
+        if (session('config') == 'personnel') {
 
-        $idenreg = $request['idenreg'];
-        session(['config' => 'utilisateur']);
+        } else {
+            session(['config' => 'utilisateur']);
+        }
         $roles = role::orderBy('name')->get();
         $abonnements = abonnement::orderBy('designation')->get();
         $nationalites = element::where('nomtable', 'NATIONALITE')
@@ -102,6 +123,8 @@ class UtilisateurController extends Controller
     {  //dd($request);
         try {
 
+            
+             
             $id = $request->input('idenreg');
 
             if ($id == 0 || $id == null) {
